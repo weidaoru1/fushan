@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fushan.mapper.MenuInfoMapper">
+    <resultMap id="BaseResultMap" type="com.fushan.entity.MenuInfo">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="num" property="num" jdbcType="INTEGER"/>
+        <result column="des" property="des" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+       id,name,num,des
+    </sql>
+
+    <select id="count" resultType="java.lang.Integer" parameterType="java.util.Map">
+      select count(id) from  tb_menu_info
+    </select>
+
+    <select id="pagedQuery" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_menu_info
+        limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_menu_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="queryList" resultMap="BaseResultMap" parameterType="com.fushan.entity.MenuInfo">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_menu_info
+        <where>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="name != null">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="num != null">
+                and num = #{num,jdbcType=INTEGER}
+            </if>
+            <if test="des != null">
+                and des = #{des,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryListAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_menu_info
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tb_menu_info
+        where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insertSelective" parameterType="com.fushan.entity.MenuInfo">
+        insert into tb_menu_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="num != null">
+                num,
+            </if>
+            <if test="des != null">
+                des
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="num != null">
+                #{num,jdbcType=INTEGER},
+            </if>
+            <if test="des != null">
+                #{des,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.fushan.entity.MenuInfo">
+        update tb_menu_info
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="num != null">
+                num = #{num,jdbcType=INTEGER},
+            </if>
+            <if test="des != null">
+                des = #{des,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.fushan.entity.MenuInfo">
+    update tb_menu_info
+    set name = #{name,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      des = #{des,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>
