@@ -35,7 +35,6 @@
     </script>
     <script>
         function menuOpen(url,name,index) {
-
             if(void 0 == url){
                 return false;
             }
@@ -62,7 +61,7 @@
                 $(".J_menuTabs .page-tabs-content").append(s);
                 e($(".J_menuTab.active"));
                 var r = "<div class=\"J_box smartmenu index\"  name=\"iframe0\" data-id=\""+ url+"\">";
-                r += " <iframe id=\"iframepage"+index+"\" src=\""+url+"\" style=\"width: 100%;overflow:auto;height:600px;\" frameborder=\"0\"></iframe></div>";
+                r += " <iframe id=\"iframepage"+index+"\" src=\""+url+"\" style=\"width: 100%;overflow:auto;height:677px;\" frameborder=\"0\"></iframe></div>";
                 $(".J_mainContent").find("div.J_box").hide().parents(".J_mainContent").append(r);
             }
             return !1;
@@ -98,8 +97,37 @@
     </div>
 
     <div>
-        <div style="float: left;width: 15%;height: 618px;background-color: #e4644b;border-radius: 7px 7px 0 0;" id="menuId">
-
+        <div style="float: left;width: 15%;">
+            <div class="sidebar-collapse" style="background-color: #245580; height: 160px;text-align: center;">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <span>
+                                <img alt="image" class="img-circle" th:src="@{/images/index/beita.png}" width="64px" height="64px"/>
+                            </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                                    <span class="block m-t-xs" th:text="${userName}">
+                                        <strong class="font-bold"></strong>
+                                    </span>
+                                    <span
+                                        class="text-muted text-xs block"><span th:text="${roleName}"></span><b class="caret"></b>
+                                    </span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="J_menuItem" href="#">修改头像</a>
+                                </li>
+                                <li><a class="J_menuItem">个人资料</a></li>
+                                <li><a class="J_menuItem">联系我们</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/login/logout">安全退出</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div style="background-color: #2f4050; height: 558px;"  id="menuId"></div>
         </div>
         <!-- height: 614px;  -->
         <div style="float: left; width: 85%;border-radius: 7px 7px 0 0;">
@@ -120,8 +148,7 @@
             </div>
             <div class="row J_mainContent bbg" id="content-main" style="margin-right: 0px;overflow:auto;">
                 <div class="J_box smartmenu index"  name="iframe0" data-id="main" id="indexId">
-                    <!--<iframe  id="iframepage" name="iframepage" width="100%" frameborder="0" onLoad="iFrameHeight('iframepage')" th:src="@{'/main'}"></iframe>-->
-                    <iframe  id="iframepage" name="iframepage" height="600px;" width="100%" th:src="@{'/main'}"></iframe>
+                    <iframe  id="iframepage" name="iframepage" height="677px;" width="100%" th:src="@{'/main'}"></iframe>
                 </div>
             </div>
             </div>

@@ -1,14 +1,13 @@
 package com.fushan.mapper;
 import com.fushan.entity.MenuChildren;
 import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
 import java.util.Map;
 
 @Mapper //把maper 变成spring容器中的bean
 public interface MenuChildrenMapper{
-    int count(Map<String,Object> map);
-    List<MenuChildren> pagedQuery(Map<String,Object> map);
+    int count(Map<String, Object> map);
+    List<MenuChildren> pagedQuery(Map<String, Object> map);
     List<MenuChildren> queryList(MenuChildren menuChildren);
     List<MenuChildren> queryListAll();
     int deleteByPrimaryKey(Integer id);

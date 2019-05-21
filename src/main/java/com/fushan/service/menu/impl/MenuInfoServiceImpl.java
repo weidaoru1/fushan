@@ -21,6 +21,18 @@ public class MenuInfoServiceImpl implements MenuInfoService {
     }
 
     @Override
+    public List<MenuInfo> queryByUserId(Integer id) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId",id);
+        return menuInfoMapper.queryByUserId(map);
+    }
+
+    @Override
+    public MenuInfo selectByPrimaryKey(Integer key) {
+        return menuInfoMapper.selectByPrimaryKey(key);
+    }
+
+    @Override
     public PageInfo<MenuInfo> pagedQueryByCondition(DataGrid grid, Map<String, Object> map) {
         int totalRows = menuInfoMapper.count(map);
         int startRows = (grid.getPageNum() - 1) * grid.getPageSize();

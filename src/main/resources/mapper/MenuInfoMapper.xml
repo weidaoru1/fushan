@@ -10,6 +10,10 @@
     <sql id="Base_Column_List">
        id,name,num,des
     </sql>
+    <select id="queryByUserId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT t.* from tb_menu_info t RIGHT JOIN tb_role_menu r on t.id = r.menu_id
+        RIGHT JOIN tb_role_user u on r.role_id = u.role_id where u.user_id = #{userId,jdbcType=INTEGER}
+    </select>
 
     <select id="count" resultType="java.lang.Integer" parameterType="java.util.Map">
       select count(id) from  tb_menu_info

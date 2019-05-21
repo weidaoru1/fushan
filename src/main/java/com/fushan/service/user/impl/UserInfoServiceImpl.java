@@ -80,13 +80,13 @@ public class UserInfoServiceImpl  implements UserInfoService {
     }
 
     @Override
-    public int insertSelective(UserInfo userInfo) {
-        int  res = userInfoMapper.insertSelective(userInfo);
+    public UserInfo insertSelective(UserInfo userInfo) {
+        userInfoMapper.insertSelective(userInfo);
         if (RedisUtils.redisOpen()){
             redisTemplate.setKeySerializer(new StringRedisSerializer());
             redisTemplate.opsForValue().set(Constants.USER_KEY + userInfo.getId(),userInfo);
         }
-        return res;
+        return userInfo;
     }
 
     @Override
