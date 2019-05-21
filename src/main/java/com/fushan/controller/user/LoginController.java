@@ -1,28 +1,34 @@
 package com.fushan.controller.user;
-import com.fushan.common.util.*;
+import com.fushan.common.util.DataGrid;
+import com.fushan.common.util.MD5utils;
+import com.fushan.common.util.UserConstants;
+import com.fushan.entity.RoleInfo;
+import com.fushan.entity.RoleUser;
 import com.fushan.entity.UserInfo;
+import com.fushan.service.role.RoleInfoService;
+import com.fushan.service.role.RoleUserService;
 import com.fushan.service.user.UserInfoService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 @Controller
 public class LoginController {
-    @Autowired
-    private RedisTemplate<Object,Object> redisTemplate;
     @Resource
     UserInfoService userInfoService;
+    @Resource
+    RoleUserService roleUserService;
+    @Resource
+    RoleInfoService roleInfoService;
     @RequestMapping("/user/userList")
     public String userList(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
-        Object obj = userInfoService.pagedQuery(dataGrid);
-        model.addAttribute("page",obj);
+        model.addAttribute("page",userInfoService.pagedQuery(dataGrid));
         return "views/user/userList";
     }
 
@@ -36,8 +42,23 @@ public class LoginController {
         return "login";
     }
     @RequestMapping("user/queryById")
-    public  @ResponseBody Object queryById(HttpServletRequest request, UserInfo userInfo){
-        return userInfoService.selectByPrimaryKey(userInfo.getId());
+    public  @ResponseBody String queryById(HttpServletRequest request, UserInfo userInfo) throws Exception{
+        JSONObject object = new JSONObject();
+        UserInfo user = userInfoService.selectByPrimaryKey(userInfo.getId());
+        if (user != null){
+            object.put("id",user.getId());
+            object.put("userName",user.getUserName());
+            object.put("realName",user.getRealName());
+            object.put("password",user.getPassword());
+            object.put("tel",user.getTel());
+            object.put("des",user.getDes());
+        }
+        List<RoleInfo> list =  roleInfoService.queryByUserId(userInfo.getId());
+        if (list != null && list.size() > 0){
+            object.put("roleId",list.get(0).getId());
+            object.put("roleName",list.get(0).getRoleName());
+        }
+        return object.toString();
     }
     @RequestMapping("user/deleteById")
     public  @ResponseBody String deleteById(HttpServletRequest request)throws Exception{
@@ -46,6 +67,7 @@ public class LoginController {
         if (StringUtils.isNotBlank(id)){
             String[] ids = id.split(";");
             for (String s : ids){
+                roleUserService.deleteByUserId(Integer.parseInt(s));
                 userInfoService.deleteByPrimaryKey(Integer.valueOf(s));
             }
         }
@@ -54,6 +76,7 @@ public class LoginController {
     }
     @RequestMapping("user/save")
     public @ResponseBody String save(HttpServletRequest request, UserInfo userInfo)throws Exception{
+        String roleId = request.getParameter("roleId");
         JSONObject jsonObject = new JSONObject();
         UserInfo u = new UserInfo();
         u.setUserName(userInfo.getUserName());
@@ -67,8 +90,16 @@ public class LoginController {
         if (userInfo.getId() != null){
             userInfoService.updateByPrimaryKey(userInfo);
         }else{
-           userInfoService.insertSelective(userInfo);
+            userInfo = userInfoService.insertSelective(userInfo);
         }
+        if (StringUtils.isNotBlank(roleId) && userInfo != null){
+            roleUserService.deleteByUserId(userInfo.getId());
+            RoleUser roleUser = new RoleUser();
+            roleUser.setRoleId(Integer.parseInt(roleId));
+            roleUser.setUserId(userInfo.getId());
+            roleUserService.insertSelective(roleUser);
+        }
+
         jsonObject.put("status",1);
         jsonObject.put("msg","保存成功！");
         return jsonObject.toString();
@@ -87,9 +118,13 @@ public class LoginController {
         request.getSession().setAttribute(UserConstants.LOGIN_USER.name(),userInfo);
         request.getSession().setAttribute(UserConstants.LOGIN_USER_NAME.name(),userInfo.getUserName());
         request.getSession().setAttribute(UserConstants.LOGIN_REAL_NAME.name(),userInfo.getRealName());
+        request.getSession().setAttribute(UserConstants.LOGIN_USER_ID.name(),userInfo.getId());
         jsonObject.put("status",1);
         jsonObject.put("success",true);
         return jsonObject.toString();
     }
-
+    @RequestMapping("/login/logout")
+    public String logout(){
+        return "redirect:/login";
+    }
 }

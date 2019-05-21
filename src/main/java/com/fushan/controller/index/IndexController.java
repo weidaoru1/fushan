@@ -1,9 +1,11 @@
 package com.fushan.controller.index;
-
+import com.fushan.common.util.UserConstants;
 import com.fushan.entity.MenuChildren;
 import com.fushan.entity.MenuInfo;
+import com.fushan.entity.RoleInfo;
 import com.fushan.service.menu.MenuChildrenService;
 import com.fushan.service.menu.MenuInfoService;
+import com.fushan.service.role.RoleInfoService;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -22,10 +24,12 @@ public class IndexController {
     MenuInfoService menuInfoService;
     @Resource
     MenuChildrenService menuChildrenService;
+    @Resource
+    RoleInfoService roleInfoService;
     @RequestMapping("/index")
     public String index(Model model, HttpServletRequest request)throws Exception{
         JSONArray jsonArray = new JSONArray();
-        List<MenuInfo> menuInfoList = menuInfoService.queryListAll();
+        List<MenuInfo> menuInfoList = menuInfoService.queryByUserId((Integer)request.getSession().getAttribute(UserConstants.LOGIN_USER_ID.name()));
         if (menuInfoList != null && menuInfoList.size() > 0){
             for (MenuInfo menuInfo : menuInfoList){
                 JSONObject json = new JSONObject();
@@ -44,6 +48,13 @@ public class IndexController {
                 jsonArray.put(json);
             }
         }
+        String roleName = "";
+        List<RoleInfo> roleInfo = roleInfoService.queryByUserId((Integer)request.getSession().getAttribute(UserConstants.LOGIN_USER_ID.name()));
+        if (roleInfo != null && roleInfo.size() > 0){
+            roleName = roleInfo.get(0).getRoleName();
+        }
+        model.addAttribute("roleName",roleName);
+        model.addAttribute("userName",request.getSession().getAttribute(UserConstants.LOGIN_USER_NAME.name()));
         model.addAttribute("menuList",jsonArray);
         return "index/index";
     }
@@ -55,7 +66,7 @@ public class IndexController {
     public @ResponseBody
     String menuList(HttpServletRequest request)throws Exception{
         JSONArray jsonArray = new JSONArray();
-        List<MenuInfo> menuInfoList = menuInfoService.queryListAll();
+        List<MenuInfo> menuInfoList = menuInfoService.queryByUserId((Integer)request.getSession().getAttribute(UserConstants.LOGIN_USER_ID.name()));
         if (menuInfoList != null && menuInfoList.size() > 0){
             for (MenuInfo menuInfo : menuInfoList){
                 JSONObject json = new JSONObject();
