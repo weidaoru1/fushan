@@ -13,8 +13,8 @@ li {
 }
 
 .mainmenu > li {
-    background-color: #e4644b;
-    border-top: 1px solid #d05942;
+    background-color: #2f4050;
+    border-bottom: 1px solid #245580;
     height: 48px;
     color: #f7f1e3;
     box-sizing: border-box;
