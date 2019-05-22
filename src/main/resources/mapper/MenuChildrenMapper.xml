@@ -13,7 +13,7 @@
        id,name,url,parent_Id,num,des
     </sql>
     <select id="queryMenuByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-       select id,name,url,des from tb_menu_children where parent_Id = #{parentId}
+       select id,name,url,des from tb_menu_children where parent_Id = #{parentId} order by num
     </select>
 
     <select id="count" resultType="java.lang.Integer" parameterType="java.util.Map">
