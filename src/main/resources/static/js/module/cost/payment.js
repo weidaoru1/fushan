@@ -47,11 +47,10 @@ $(function () {
                 contact : form1.contact.value,
                 payee : form1.payee.value,
                 amount : form1.amount.value,
-                type : parseInt(form1.type.value),
+                type : form1.type.value,
                 paymentTime : form1.paymentTime.value,
                 detailsDes : form1.detailsDes.value,
                 remark : form1.remark.value,
-                paymentTime : form1.paymentTime.value,
                 id : form1.id.value
             },
             dataType:"json",
