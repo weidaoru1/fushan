@@ -1,4 +1,4 @@
-package com.fushan.controller.user;
+package com.fushan.controller;
 import com.fushan.common.util.DataGrid;
 import com.fushan.common.util.MD5utils;
 import com.fushan.common.util.UserConstants;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
 @Controller
 public class LoginController {
     @Resource

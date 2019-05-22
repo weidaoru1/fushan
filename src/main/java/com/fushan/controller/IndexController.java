@@ -1,4 +1,4 @@
-package com.fushan.controller.index;
+package com.fushan.controller;
 import com.fushan.common.util.UserConstants;
 import com.fushan.entity.MenuChildren;
 import com.fushan.entity.MenuInfo;

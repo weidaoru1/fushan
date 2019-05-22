@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>父级菜单添加</title>
     <div th:replace="common/common :: common"></div>
     <style>
         body{background-color: #e7eaec;height: 620px;}
@@ -13,13 +14,13 @@
             <div class="ibox-content">
                 <div style="height: 20px;"></div>
                 <div class="doc-buttons" style=" margin-left: 20px;">
-                    <button id="userWindow" class="btn btn-primary" type="button">
+                    <button id="addWindow" class="btn btn-primary" type="button">
                         <i class="glyphicon glyphicon-plus"></i>&nbsp;新增
                     </button>
-                    <button id="userEdit" class="btn btn-primary" type="button">
+                    <button id="editWindow" class="btn btn-primary" type="button">
                         <i class="glyphicon glyphicon-edit"></i>&nbsp;编辑
                     </button>
-                    <button id = "userDelete" class="btn btn-primary" type="button">
+                    <button id = "deleteWindow" class="btn btn-primary" type="button">
                         <i class="glyphicon glyphicon-trash"></i>&nbsp;删除
                     </button>
                 </div>

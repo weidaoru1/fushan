@@ -1,4 +1,4 @@
-package com.fushan.controller.role;
+package com.fushan.controller;
 import com.fushan.service.role.RoleInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
