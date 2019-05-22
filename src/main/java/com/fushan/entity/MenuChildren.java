@@ -7,6 +7,16 @@ public class MenuChildren implements Serializable {
     private Integer parentId;
     private Integer num;
     private String des;
+    private Integer state;
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
     public String getName() {
         return name;
     }
