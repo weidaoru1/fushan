@@ -1,6 +1,8 @@
-package com.fushan.mapper;
+package com.fushan.mapper.menu;
+
 import com.fushan.entity.MenuInfo;
 import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 import java.util.Map;
 

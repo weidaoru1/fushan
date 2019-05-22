@@ -1,4 +1,4 @@
-package com.fushan.mapper;
+package com.fushan.mapper.role;
 import com.fushan.entity.RoleInfo;
 import org.apache.ibatis.annotations.Mapper;
 

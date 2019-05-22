@@ -2,7 +2,7 @@ package com.fushan.service.menu.impl;
 import com.fushan.common.util.DataGrid;
 import com.fushan.common.util.PageInfo;
 import com.fushan.entity.MenuInfo;
-import com.fushan.mapper.MenuInfoMapper;
+import com.fushan.mapper.menu.MenuInfoMapper;
 import com.fushan.service.menu.MenuInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.fushan.service.user.impl;
 import com.fushan.common.util.*;
 import com.fushan.entity.UserInfo;
-import com.fushan.mapper.UserInfoMapper;
+import com.fushan.mapper.user.UserInfoMapper;
 import com.fushan.service.user.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

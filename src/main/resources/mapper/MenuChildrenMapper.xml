@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fushan.mapper.MenuChildrenMapper">
+<mapper namespace="com.fushan.mapper.menu.MenuChildrenMapper">
     <resultMap id="BaseResultMap" type="com.fushan.entity.MenuChildren">
         <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>

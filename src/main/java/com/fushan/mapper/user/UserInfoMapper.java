@@ -1,10 +1,13 @@
-package com.fushan.mapper;
+package com.fushan.mapper.user;
+
 import com.fushan.entity.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 import java.util.Map;
+
 @Mapper
-public interface UserInfoMapper{
+public interface UserInfoMapper {
     int count(Map<String, Object> map);
     List<UserInfo> pagedQuery(Map<String, Object> map);
     List<UserInfo> queryList(UserInfo userInfo);

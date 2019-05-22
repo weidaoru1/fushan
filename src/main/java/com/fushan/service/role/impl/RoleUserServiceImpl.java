@@ -1,6 +1,6 @@
 package com.fushan.service.role.impl;
 import com.fushan.entity.RoleUser;
-import com.fushan.mapper.RoleUserMapper;
+import com.fushan.mapper.role.RoleUserMapper;
 import com.fushan.service.role.RoleUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
