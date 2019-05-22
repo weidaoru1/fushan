@@ -12,7 +12,7 @@
     </sql>
     <select id="queryByUserId" resultMap="BaseResultMap" parameterType="java.util.Map">
         SELECT t.* from tb_menu_info t RIGHT JOIN tb_role_menu r on t.id = r.menu_id
-        RIGHT JOIN tb_role_user u on r.role_id = u.role_id where u.user_id = #{userId,jdbcType=INTEGER}
+        RIGHT JOIN tb_role_user u on r.role_id = u.role_id where u.user_id = #{userId,jdbcType=INTEGER} order by t.num
     </select>
 
     <select id="count" resultType="java.lang.Integer" parameterType="java.util.Map">
