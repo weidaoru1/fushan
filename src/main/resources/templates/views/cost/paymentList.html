@@ -6,7 +6,6 @@
     <style>
         body{background-color: #e7eaec;height: 700px;}
         .divStyle{margin-left: 20px;margin-right: 20px;margin-top: 30px;background-color: white;}
-        .blur{ color: red;}
     </style>
     <script  th:src="@{/js/module/cost/payment.js}"></script>
 </head>
@@ -110,69 +109,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!-- 模态框（Modal） -->
-    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="paymentLabel"></h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal"  name="form1" role="form">
-                        <div>
-                            <div style="float: left;">
-                                客户姓名:<input type="text"  id="customerName" name="customerName" placeholder="请输入客户姓名">
-                            </div>
-                            <div style="float: left;margin-left: 10px;">
-                                联系方式:<input type="tel" id="contact" name="contact" placeholder="请输入联系方式">
-                            </div>
-                        </div>
-                        <div>
-                            <div style="float: left;">
-                                收款人:<input type="text"  id="payee" name="payee" placeholder="请输入收款人">
-                            </div>
-                            <div style="float: left;margin-left: 10px;">
-                                实收金额:<input type="number" id="amount" name="amount" placeholder="请输入金额">
-                            </div>
-                        </div>
-
-                        <div>
-                            <div style="float: left;">
-                                收款方式: <select  id="type">
-                                <option value ="1">现金</option>
-                                <option value ="2">支付宝</option>
-                                <option value ="3">微信</option>
-                                <option value ="4">转账</option>
-                            </select>
-                            </div>
-                            <div style="float: left;margin-left: 10px;">
-                                收款日期:<input type="datetime-local"  id="paymentTime" name="paymentTime" placeholder="请选择收款日期">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="detailsDes" class="col-sm-2 control-label">详情描述</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="detailsDes" name="detailsDes"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="remark" class="col-sm-2 control-label">备注</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="remark" name="remark"></textarea>
-                            </div>
-                        </div>
-                        <div><input type="hidden" id="id" /></div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" id="paymentSave">保存</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
     </div>
 </body>
 </html>

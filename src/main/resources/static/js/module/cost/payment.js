@@ -1,18 +1,33 @@
 
 $(function () {
     $("#addWindow").click(function () {
-        $('#customerName').val("");
-        $('#contact').val("");
-        $('#payee').val("");
-        $('#amount').val("");
-        $('#paymentTime').val("");
-        $('#detailsDes').val("");
-        $('#remark').val("");
-        $("#paymentLabel").text("收入记录添加");
-        $('#paymentModal').modal('show');
+        window.location.href="/cost/payment";
+    });
+    $("#editWindow").click(function () {
+        var obj = document.getElementsByName("check");
+        var check_val = [];
+        var id;
+        for (var i = 0; i < obj.length; i++){
+            if(obj[i].checked){
+                check_val.push(obj[i].value);
+                id = obj[i].value;
+            }
+        }
+        if (check_val.length == 0){
+            bootbox.alert("请选择编辑的数据记录！");
+            return false;
+        }else if (check_val.length > 1){
+            bootbox.alert("只允许一条数据记录！");
+            return false;
+        }
+        window.location.href="/cost/paymentEdit?id="+id;
     });
 
     $("#paymentSave").click(function () {
+        var url = "/payment/save";
+        if (form1.id.value != ""){
+            url = "/payment/edit";
+        }
         if(form1.customerName.value==""){
             form1.customerName.focus();
             return false;
@@ -39,8 +54,14 @@ $(function () {
             form1.paymentTime.focus();
             return false;
         }
+        var paymentTime = new Date(form1.paymentTime.value);
+        var createTime = form1.createTime.value;
+        if (createTime == ""){
+            createTime = new Date();
+        }
+
         $.ajax({
-            url:"/payment/save",
+            url:url,
             type:"POST",
             data:{
                 customerName : form1.customerName.value,
@@ -48,23 +69,24 @@ $(function () {
                 payee : form1.payee.value,
                 amount : form1.amount.value,
                 type : form1.type.value,
-                paymentTime : form1.paymentTime.value,
+                paymentTime : paymentTime,
                 detailsDes : form1.detailsDes.value,
                 remark : form1.remark.value,
+                createTime : createTime,
                 id : form1.id.value
             },
             dataType:"json",
             success:function(result){
                 bootbox.alert(result.msg, function () {
-                    $('#paymentModal').modal('hide');
-                    location.assign(getRootPath() + location.pathname);
+                    window.location.href="/cost/PaymentList";
                 });
 
             }
         });
     });
-
-
+    $("#paymentClose").click(function () {
+        window.location.href="/cost/PaymentList";
+    });
 });
 
 
