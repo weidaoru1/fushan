@@ -8,6 +8,14 @@ public class PaymentRecord implements Serializable {
     private static final long serialVersionUID = -3638138575169686305L;
     private Integer id;
     /**
+     * 修改人
+     */
+    private String userName;
+    /**
+     * 修改数据id
+     */
+    private Integer paymentId;
+    /**
      * 客户姓名
      */
     private String customerName;
@@ -28,7 +36,7 @@ public class PaymentRecord implements Serializable {
      */
     private Integer type;
     /**
-     * 创建日期
+     * 修改时间
      */
     private Date createTime;
     /**
@@ -43,6 +51,22 @@ public class PaymentRecord implements Serializable {
      * 备注
      */
     private String remark;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Integer getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Integer paymentId) {
+        this.paymentId = paymentId;
+    }
 
     public Integer getId() {
         return id;

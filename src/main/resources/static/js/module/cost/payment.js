@@ -78,14 +78,51 @@ $(function () {
             dataType:"json",
             success:function(result){
                 bootbox.alert(result.msg, function () {
-                    window.location.href="/cost/PaymentList";
+                    window.location.href="/cost/paymentList";
                 });
-
             }
         });
     });
     $("#paymentClose").click(function () {
-        window.location.href="/cost/PaymentList";
+        window.location.href="/cost/paymentList";
+    });
+    $("#paymentReturn").click(function () {
+        window.location.href="/cost/paymentList";
+    });
+    $("#deleteWindow").click(function () {
+        if ($("#isSuper").val() != "1"){
+            bootbox.alert("您没有删除权限，请联系系统管理员！");
+            return;
+        }
+        var obj = document.getElementsByName("check");
+        var check_val = [];
+        for (var i = 0; i < obj.length; i++){
+            if(obj[i].checked){
+                check_val.push(obj[i].value);
+            }
+        }
+        if (check_val.length == 0){
+            bootbox.alert("请选择删除的数据记录！")
+            return false;
+        }
+        bootbox.confirm("确定要删除选择的数据！", function(result){
+            if(!result){
+                return;
+            }
+            $.ajax({
+                url:"/payment/deleteById",
+                type:"POST",
+                data:{
+                    ids : check_val.join(";")
+                },
+                dataType:"json",
+                success:function(result){
+                    bootbox.alert(result.msg, function () {
+                        location.assign(getRootPath() + location.pathname);
+                    });
+                }
+            });
+        });
     });
 });
 
