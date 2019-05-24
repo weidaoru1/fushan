@@ -1,7 +1,7 @@
 
 $(function () {
     $("#addWindow").click(function () {
-        window.location.href="/cost/payment";
+        window.location.href="/cost/paymentAdd";
     });
     $("#editWindow").click(function () {
         var obj = document.getElementsByName("check");

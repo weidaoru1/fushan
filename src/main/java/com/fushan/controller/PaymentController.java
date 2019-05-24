@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Controller
 public class PaymentController {
@@ -22,9 +20,8 @@ public class PaymentController {
         model.addAttribute("page",paymentInfoService.pagedQuery(dataGrid));
         return "views/cost/paymentList";
     }
-    @RequestMapping("cost/payment")
+    @RequestMapping("cost/paymentAdd")
     public String payment(Model model, HttpServletRequest request)throws Exception{
-        model.addAttribute("state","add");
         return "views/cost/paymentAdd";
     }
     @RequestMapping("cost/paymentEdit")
@@ -37,13 +34,20 @@ public class PaymentController {
         if(paymentInfo != null){
             model.addAttribute("paymentInfo",paymentInfo);
         }
-        model.addAttribute("state","edit");
-        return "views/cost/paymentAdd";
+        return "views/cost/paymentEdit";
     }
     @RequestMapping("payment/save")
     public @ResponseBody String save(HttpServletRequest request,PaymentInfo paymentInfo)throws Exception{
         JSONObject jsonObject = new JSONObject();
         paymentInfoService.insertSelective(paymentInfo);
+        jsonObject.put("status",1);
+        jsonObject.put("msg","保存成功！");
+        return jsonObject.toString();
+    }
+    @RequestMapping("payment/edit")
+    public @ResponseBody String edit(HttpServletRequest request,PaymentInfo paymentInfo)throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        paymentInfoService.updateByPrimaryKey(paymentInfo);
         jsonObject.put("status",1);
         jsonObject.put("msg","保存成功！");
         return jsonObject.toString();
