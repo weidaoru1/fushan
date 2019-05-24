@@ -5,14 +5,26 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="spend_name" property="spendName" jdbcType="VARCHAR" />
     <result column="spend_matters" property="spendMatters" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="spend_time" property="spendTime" jdbcType="TIMESTAMP" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, spend_name, spend_matters, type, create_time, spend_time, remark
+    id, spend_name, spend_matters, amount,type, create_time, spend_time, remark
   </sql>
+  <select id="count" resultType="java.lang.Integer" parameterType="java.util.Map">
+      select count(id) from  tb_spend_info
+    </select>
+  <select id="pagedQuery" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_spend_info
+    order by create_time desc
+    limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -24,11 +36,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.fushan.entity.SpendInfo" >
-    insert into tb_spend_info (id, spend_name, spend_matters, 
-      type, create_time, spend_time, 
-      remark)
-    values (#{id,jdbcType=INTEGER}, #{spendName,jdbcType=VARCHAR}, #{spendMatters,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{spendTime,jdbcType=TIMESTAMP}, 
+    insert into tb_spend_info (id, spend_name, spend_matters, amount,
+      type, create_time, spend_time, remark)
+    values (#{id,jdbcType=INTEGER}, #{spendName,jdbcType=VARCHAR}, #{spendMatters,jdbcType=VARCHAR}, #{amount,jdbcType=DOUBLE},
+      #{type,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{spendTime,jdbcType=TIMESTAMP},
       #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fushan.entity.SpendInfo" >
@@ -43,6 +54,9 @@
       <if test="spendMatters != null" >
         spend_matters,
       </if>
+      <if test="amount != null">
+        amount,
+      </if>
       <if test="type != null" >
         type,
       </if>
@@ -53,7 +67,7 @@
         spend_time,
       </if>
       <if test="remark != null" >
-        remark,
+        remark
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -66,6 +80,9 @@
       <if test="spendMatters != null" >
         #{spendMatters,jdbcType=VARCHAR},
       </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DOUBLE},
+      </if>
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
       </if>
@@ -76,7 +93,7 @@
         #{spendTime,jdbcType=TIMESTAMP},
       </if>
       <if test="remark != null" >
-        #{remark,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>
@@ -89,6 +106,9 @@
       <if test="spendMatters != null" >
         spend_matters = #{spendMatters,jdbcType=VARCHAR},
       </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
       </if>
@@ -99,7 +119,7 @@
         spend_time = #{spendTime,jdbcType=TIMESTAMP},
       </if>
       <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR}
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -108,6 +128,7 @@
     update tb_spend_info
     set spend_name = #{spendName,jdbcType=VARCHAR},
       spend_matters = #{spendMatters,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DOUBLE},
       type = #{type,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       spend_time = #{spendTime,jdbcType=TIMESTAMP},

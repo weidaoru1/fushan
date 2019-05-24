@@ -16,6 +16,10 @@ public class SpendInfo implements Serializable {
      */
     private String spendMatters;
     /**
+     * 支出金额
+     */
+    private Double amount;
+    /**
      * 支出方式 1：现金 2：支付宝 3：微信 4：转账
      */
     private Integer type;
@@ -82,6 +86,14 @@ public class SpendInfo implements Serializable {
 
     public Date getSpendTime() {
         return spendTime;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public void setSpendTime(Date spendTime) {
