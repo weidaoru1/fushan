@@ -40,7 +40,9 @@
         payment_id = #{paymentId,jdbcType=INTEGER}
       </if>
     </where>
+    order by create_time desc
     limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

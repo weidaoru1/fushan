@@ -1,7 +1,9 @@
 package com.fushan.controller;
+import com.fushan.common.util.DataDealUtils;
 import com.fushan.common.util.DataGrid;
 import com.fushan.common.util.UserConstants;
 import com.fushan.entity.PaymentInfo;
+import com.fushan.entity.PaymentRecord;
 import com.fushan.entity.RoleInfo;
 import com.fushan.service.cost.PaymentInfoService;
 import com.fushan.service.cost.PaymentRecordService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +76,14 @@ public class PaymentController {
     @RequestMapping("payment/edit")
     public @ResponseBody String edit(HttpServletRequest request,PaymentInfo paymentInfo)throws Exception{
         JSONObject jsonObject = new JSONObject();
+        PaymentInfo oldData = paymentInfoService.selectByPrimaryKey(paymentInfo.getId());
+        PaymentRecord paymentRecord = DataDealUtils.getPaymentRecord(paymentInfo,oldData);
+        if(paymentRecord != null){
+            paymentRecord.setPaymentId(paymentInfo.getId());
+            paymentRecord.setUserName((String)request.getSession().getAttribute(UserConstants.LOGIN_USER_NAME.name()));
+            paymentRecord.setCreateTime(new Date());
+            paymentRecordService.insertSelective(paymentRecord);
+        }
         paymentInfoService.updateByPrimaryKey(paymentInfo);
         jsonObject.put("status",1);
         jsonObject.put("msg","保存成功！");
