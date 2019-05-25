@@ -60,10 +60,10 @@
                                         <span th:case="3">微信</span>
                                         <span th:case="4">转账</span>
                                     </td>
-                                    <td th:text="${#dates.format(spendInfo.spendTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${#dates.format(spendInfo.spendTime, 'yyyy-MM-dd')}"></td>
                                     <td th:text="${#dates.format(spendInfo.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                     <td th:text="${spendInfo.remark}"></td>
-                                    <td><a th:href="@{'/cost/paymentRecordList?spendId='+ ${spendInfo.id}}">修改记录</a></td>
+                                    <td><a th:href="@{'/spend/spendRecordList?spendId='+ ${spendInfo.id}}">修改记录</a></td>
                                 </tr>
                             </tbody>
                         </table>

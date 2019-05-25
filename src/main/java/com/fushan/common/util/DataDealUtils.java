@@ -2,6 +2,8 @@ package com.fushan.common.util;
 
 import com.fushan.entity.PaymentInfo;
 import com.fushan.entity.PaymentRecord;
+import com.fushan.entity.SpendInfo;
+import com.fushan.entity.SpendRecord;
 
 public class DataDealUtils {
     /**
@@ -63,5 +65,47 @@ public class DataDealUtils {
             }
         }
         return paymentRecord;
+    }
+    public static SpendRecord getSpendRecord(SpendInfo newData, SpendInfo oldData){
+        SpendRecord spendRecord = null;
+        if(newData != null && oldData != null){
+            if (!newData.getSpendName().equals(oldData.getSpendName())){
+                spendRecord = new SpendRecord();
+            }
+            if (!newData.getSpendMatters().equals(oldData.getSpendMatters())){
+                if (spendRecord == null){
+                    spendRecord = new SpendRecord();
+                }
+            }
+            if (!String.valueOf(newData.getAmount()).equals(String.valueOf(oldData.getAmount()))){
+                if (spendRecord == null){
+                    spendRecord = new SpendRecord();
+                }
+            }
+            if (newData.getType() != oldData.getType()){
+                if (spendRecord == null){
+                    spendRecord = new SpendRecord();
+                }
+            }
+            if (!DateUtils.dateToStr(newData.getSpendTime()).equals(DateUtils.dateToStr(oldData.getSpendTime()))){
+                if (spendRecord == null){
+                    spendRecord = new SpendRecord();
+                }
+            }
+            if (!newData.getRemark().equals(oldData.getRemark())){
+                if (spendRecord == null){
+                    spendRecord = new SpendRecord();
+                }
+            }
+            if (spendRecord != null){
+                spendRecord.setSpendName(newData.getSpendName());
+                spendRecord.setSpendMatters(newData.getSpendMatters());
+                spendRecord.setAmount(newData.getAmount());
+                spendRecord.setType(newData.getType());
+                spendRecord.setSpendTime(newData.getSpendTime());
+                spendRecord.setRemark(newData.getRemark());
+            }
+        }
+        return spendRecord;
     }
 }

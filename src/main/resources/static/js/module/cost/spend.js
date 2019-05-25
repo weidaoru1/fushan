@@ -73,8 +73,8 @@ $(function () {
     $("#spendClose").click(function () {
         window.location.href="/cost/spendList";
     });
-    $("#paymentReturn").click(function () {
-        window.location.href="/cost/paymentList";
+    $("#spendReturn").click(function () {
+        window.location.href="/cost/spendList";
     });
     $("#deleteWindow").click(function () {
         if ($("#isSuper").val() != "1"){
@@ -97,7 +97,7 @@ $(function () {
                 return;
             }
             $.ajax({
-                url:"/payment/deleteById",
+                url:"/spend/deleteById",
                 type:"POST",
                 data:{
                     ids : check_val.join(";")

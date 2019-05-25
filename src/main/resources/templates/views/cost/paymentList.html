@@ -42,8 +42,8 @@
                                     <th>收款人</th>
                                     <th>实收金额</th>
                                     <th>收款方式</th>
-                                    <th>创建日期</th>
                                     <th>收款日期</th>
+                                    <th>创建日期</th>
                                     <th>详情描述</th>
                                     <th>备注</th>
                                     <th>操作</th>
@@ -63,8 +63,8 @@
                                         <span th:case="3">微信</span>
                                         <span th:case="4">转账</span>
                                     </td>
+                                    <td th:text="${#dates.format(paymentInfo.paymentTime, 'yyyy-MM-dd')}"></td>
                                     <td th:text="${#dates.format(paymentInfo.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                    <td th:text="${#dates.format(paymentInfo.paymentTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                                     <td th:text="${paymentInfo.detailsDes}"></td>
                                     <td th:text="${paymentInfo.remark}"></td>
                                     <td><a th:href="@{'/cost/paymentRecordList?paymentId='+ ${paymentInfo.id}}">修改记录</a></td>
