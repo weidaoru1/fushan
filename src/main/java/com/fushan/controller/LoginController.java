@@ -87,7 +87,8 @@ public class LoginController {
             jsonObject.put("status",0);
             return jsonObject.toString();
         }
-        userInfo.setPassword(MD5utils.encrypt(userInfo.getPassword()));
+        //md5加密
+//        userInfo.setPassword(MD5utils.encrypt(userInfo.getPassword()));
         if (userInfo.getId() != null){
             userInfoService.updateByPrimaryKey(userInfo);
         }else{

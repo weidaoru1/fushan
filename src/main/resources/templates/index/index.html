@@ -2,13 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="common/common :: common"></div>
-    <title>Title</title>
+    <title>个人系统</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
     <script  th:src="@{/js/init/index.js}"></script>
-
     <style>
-        body{background-color: #e7eaec; height: 100%; overflow: hidden}
+        body{background-color: #e7eaec;}
     </style>
     <script>
         $(document).ready( function() {
@@ -18,11 +17,13 @@
     </script>
 </head>
 <body>
-    <div class="topbar" style="height: 40px;background-color: #2f4050;">
+    <!--<div class="topbar" style="height: 40px;background-color: #2f4050;">-->
+    <!--</div>-->
+    <div class="topbar" style="height: 10%;background-color: #2f4050;">
+        <img th:src="@{/images/bg.jpg}" style="height: 100%;width: 100%;"/>
     </div>
-
-    <div>
-        <div style="float: left;width: 13%;">
+    <div style="height: 90%;">
+        <div style="float: left;width: 13%;height: 100%;background-color: #2f4050;">
             <div class="sidebar-collapse" style="background-color: #245580; height: 160px;text-align: center;">
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
@@ -36,7 +37,7 @@
                                         <strong class="font-bold"></strong>
                                     </span>
                                     <span
-                                        class="text-muted text-xs block"><span th:text="${roleName}"></span><b class="caret"></b>
+                                            class="text-muted text-xs block"><span th:text="${roleName}"></span><b class="caret"></b>
                                     </span>
                                 </span>
                             </a>
@@ -52,30 +53,29 @@
                     </li>
                 </ul>
             </div>
-            <div style="background-color: #2f4050; height: 558px;"  id="menuId"></div>
+            <div style="background-color: #2f4050;"  id="menuId"></div>
         </div>
-        <!-- height: 614px;  -->
-        <div style="float: left; width: 87%;border-radius: 7px 7px 0 0;">
-            <div class="row content-tabs">
-                <button class="roll-nav roll-left J_tabLeft">
-                    <i class="fa fa-backward"></i>
-                </button>
+        <div style="float: left; width: 87%;height: 100%;">
+            <div style="height: 100%;">
+                <div class="row content-tabs" style="height: 42px;">
+                    <button class="roll-nav roll-left J_tabLeft">
+                        <i class="fa fa-backward"></i>
+                    </button>
 
-                <nav class="page-tabs J_menuTabs">
-                    <div class="page-tabs-content">
-                        <a href="javascript:void(0);" class="J_menuTab active main" id="main" data-id="main">首页</a>
-                    </div>
-                </nav>
-                <button style="margin-right: 20px;" class="roll-nav roll-right J_tabRight">
-                    <i class="fa fa-forward"></i>
-                </button>
-
-            </div>
-            <div class="row J_mainContent bbg" id="content-main" style="margin-right: 0px;overflow:auto;">
-                <div class="J_box smartmenu index"  name="iframe0" data-id="main" id="indexId">
-                    <iframe  id="iframepage" name="iframepage" height="677px;" width="100%" th:src="@{'/main'}"></iframe>
+                    <nav class="page-tabs J_menuTabs">
+                        <div class="page-tabs-content">
+                            <a href="javascript:void(0);" class="J_menuTab active main" id="main" data-id="main">首页</a>
+                        </div>
+                    </nav>
+                    <button style="margin-right: 20px;" class="roll-nav roll-right J_tabRight">
+                        <i class="fa fa-forward"></i>
+                    </button>
                 </div>
-            </div>
+                <div class="row J_mainContent bbg" id="content-main" style="height: calc(100% - 42px);">
+                    <div class="J_box smartmenu index"  name="iframe0" data-id="main" id="indexId"style="height: 100%;">
+                        <iframe  id="iframepage" name="iframepage" width="100%" th:src="@{'/main'}" height="100%"></iframe>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

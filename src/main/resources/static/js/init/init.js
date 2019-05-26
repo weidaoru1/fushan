@@ -40,8 +40,8 @@ function menuOpen(url,name,index) {
         $(".J_menuTab").removeClass("active");
         $(".J_menuTabs .page-tabs-content").append(s);
         e($(".J_menuTab.active"));
-        var r = "<div class=\"J_box smartmenu index\"  name=\"iframe0\" data-id=\""+ url+"\">";
-        r += " <iframe id=\"iframepage"+index+"\" src=\""+url+"\" style=\"width: 100%;overflow:auto;height:677px;\" frameborder=\"0\"></iframe></div>";
+        var r = "<div class=\"J_box smartmenu index\"  name=\"iframe0\" data-id=\""+ url+"\" style=\"height: 100%;\">";
+        r += " <iframe id=\"iframepage"+index+"\" src=\""+url+"\" width=\"100%\" height=\"100%\"></iframe></div>";
         $(".J_mainContent").find("div.J_box").hide().parents(".J_mainContent").append(r);
     }
     return !1;

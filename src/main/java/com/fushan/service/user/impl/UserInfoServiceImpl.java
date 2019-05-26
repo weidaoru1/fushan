@@ -104,7 +104,9 @@ public class UserInfoServiceImpl  implements UserInfoService {
     public UserInfo userCheck(String userName, String password) {
         Map<String,Object> map = new HashMap<>();
         map.put("userName",userName);
-        map.put("password", MD5utils.encrypt(password));
+        //md5加密
+//        map.put("password", MD5utils.encrypt(password));
+        map.put("password", password);
         UserInfo userInfo = null;
         if (RedisUtils.redisOpen()){
             redisTemplate.setKeySerializer(new StringRedisSerializer());
