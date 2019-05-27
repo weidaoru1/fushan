@@ -6,6 +6,8 @@
     <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
     <result column="contact" property="contact" jdbcType="VARCHAR" />
     <result column="payee" property="payee" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="amounts" property="amounts" jdbcType="DOUBLE" />
     <result column="amount" property="amount" jdbcType="DOUBLE" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -14,7 +16,7 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, customer_name, contact, payee, amount, type, create_time, payment_time, details_des, 
+    id, customer_name, contact, payee,status,amounts, amount, type, create_time, payment_time, details_des,
     remark
   </sql>
   <select id="count" resultType="java.lang.Integer" parameterType="java.util.Map">
@@ -45,6 +47,12 @@
       <if test="payee != null">
                 and payee = #{payee,jdbcType=VARCHAR}
             </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="amounts != null">
+        and amounts = #{amounts,jdbcType=DOUBLE}
+      </if>
       <if test="amount != null">
                 and amount = #{amount,jdbcType=DOUBLE}
             </if>
@@ -78,11 +86,11 @@
   </delete>
   <insert id="insert" parameterType="com.fushan.entity.PaymentInfo" >
     insert into tb_payment_info (id, customer_name, contact, 
-      payee, amount, type, 
+      payee,status,amounts, amount, type,
       create_time, payment_time, details_des, 
       remark)
     values (#{id,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, 
-      #{payee,jdbcType=VARCHAR}, #{amount,jdbcType=DOUBLE}, #{type,jdbcType=INTEGER}, 
+      #{payee,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{amounts,jdbcType=DOUBLE}, #{amount,jdbcType=DOUBLE}, #{type,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=TIMESTAMP}, #{detailsDes,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
@@ -100,6 +108,12 @@
       </if>
       <if test="payee != null" >
         payee,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="amounts != null" >
+        amounts,
       </if>
       <if test="amount != null" >
         amount,
@@ -133,6 +147,12 @@
       <if test="payee != null" >
         #{payee,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="amounts != null" >
+        #{amounts,jdbcType=DOUBLE},
+      </if>
       <if test="amount != null" >
         #{amount,jdbcType=DOUBLE},
       </if>
@@ -165,6 +185,12 @@
       <if test="payee != null" >
         payee = #{payee,jdbcType=VARCHAR},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="amounts != null" >
+        amounts = #{amounts,jdbcType=DOUBLE},
+      </if>
       <if test="amount != null" >
         amount = #{amount,jdbcType=DOUBLE},
       </if>
@@ -191,6 +217,8 @@
     set customer_name = #{customerName,jdbcType=VARCHAR},
       contact = #{contact,jdbcType=VARCHAR},
       payee = #{payee,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      amounts = #{amounts,jdbcType=DOUBLE},
       amount = #{amount,jdbcType=DOUBLE},
       type = #{type,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

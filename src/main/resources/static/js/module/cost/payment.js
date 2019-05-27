@@ -2,8 +2,11 @@
 $(function () {
     $(':radio').click(function() {
         var v = $(this).val();
+        if (v == '1'){
+            document.getElementById('amountId').style.display='none';
+        }
         if (v == '2'){
-            $("#amount").disabled = false;
+            document.getElementById('amountId').style.display='block';
         }
     });
     $("#addWindow").click(function () {
@@ -52,8 +55,19 @@ $(function () {
             form1.payee.focus();
             return false;
         }
-        if(form1.amount.value==""){
-            form1.amount.focus();
+        var amount = form1.amount.value;
+        var statusList = document.getElementsByName("status");
+        var status;
+        for(var i=0;i<statusList.length;i++){
+            if (statusList[i].checked){
+                status = statusList[i].value;
+            }
+        }
+        if (status == '1'){//已付清
+            amount = form1.amounts.value;
+        }
+        if(form1.amounts.value==""){
+            form1.amounts.focus();
             return false;
         }
         if(form1.paymentTime.value==""){
@@ -73,7 +87,9 @@ $(function () {
                 customerName : form1.customerName.value,
                 contact : form1.contact.value,
                 payee : form1.payee.value,
-                amount : form1.amount.value,
+                status : status,
+                amount : amount,
+                amounts : form1.amounts.value,
                 type : form1.type.value,
                 paymentTime : paymentTime,
                 detailsDes : form1.detailsDes.value,

@@ -20,9 +20,18 @@ public class PaymentInfo implements Serializable {
      */
     private String payee;
     /**
-     * 实收金额
+     * 收款状态
+     */
+    private Integer status;
+    /**
+     * 金额
+     */
+    private Double amounts;
+    /**
+     * 已收金额
      */
     private Double amount;
+
     /**
      * 收款方式 1：现金 2：支付宝 3：微信 4：转账
      */
@@ -118,6 +127,22 @@ public class PaymentInfo implements Serializable {
 
     public String getRemark() {
         return remark;
+    }
+
+    public Double getAmounts() {
+        return amounts;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public void setAmounts(Double amounts) {
+        this.amounts = amounts;
     }
 
     public void setRemark(String remark) {
