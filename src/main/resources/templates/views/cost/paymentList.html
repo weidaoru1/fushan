@@ -37,6 +37,7 @@
                                                onclick="$('.ii-checks').prop('checked',($(this).prop('checked') ? true : false ))"
                                                name="input[]"></th>
                                     <th>序号</th>
+                                    <th>详情</th>
                                     <th>客户姓名</th>
                                     <th>联系方式</th>
                                     <th>收款人</th>
@@ -53,6 +54,11 @@
                                 <tr th:each="paymentInfo : ${page.list}">
                                     <td><input type="checkbox" class="ii-checks" name="check" th:value="${paymentInfo.id}"></td>
                                     <td th:text="${paymentInfoStat.count}"></td>
+                                    <td style="text-align: center;">
+                                        <a href="#" title="详情查看">
+                                            <span class="glyphicon glyphicon-th-list"></span>
+                                        </a>
+                                    </td>
                                     <td th:text="${paymentInfo.customerName}"></td>
                                     <td th:text="${paymentInfo.contact}"></td>
                                     <td th:text="${paymentInfo.payee}"></td>
