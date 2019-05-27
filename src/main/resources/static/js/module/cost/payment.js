@@ -1,5 +1,11 @@
 
 $(function () {
+    $(':radio').click(function() {
+        var v = $(this).val();
+        if (v == '2'){
+            $("#amount").disabled = false;
+        }
+    });
     $("#addWindow").click(function () {
         window.location.href="/cost/paymentAdd";
     });
