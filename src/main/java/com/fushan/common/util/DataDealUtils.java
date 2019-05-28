@@ -53,6 +53,16 @@ public class DataDealUtils {
                     paymentRecord = new PaymentRecord();
                 }
             }
+            if (newData.getStatus() != oldData.getStatus()){
+                if (paymentRecord == null){
+                    paymentRecord = new PaymentRecord();
+                }
+            }
+            if (!String.valueOf(newData.getAmounts()).equals(String.valueOf(oldData.getAmounts()))){
+                if (paymentRecord == null){
+                    paymentRecord = new PaymentRecord();
+                }
+            }
             if (paymentRecord != null){
                 paymentRecord.setCustomerName(newData.getCustomerName());
                 paymentRecord.setContact(newData.getContact());

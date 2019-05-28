@@ -2,6 +2,7 @@ package com.fushan.controller;
 import com.fushan.common.util.DataDealUtils;
 import com.fushan.common.util.DataGrid;
 import com.fushan.common.util.UserConstants;
+import com.fushan.entity.PaymentDetails;
 import com.fushan.entity.PaymentInfo;
 import com.fushan.entity.PaymentRecord;
 import com.fushan.entity.RoleInfo;
@@ -99,24 +100,12 @@ public class PaymentController {
         if (StringUtils.isNotBlank(id)) {
             String[] ids = id.split(";");
             for(String s : ids){
+                paymentDetailsService.deleteByPaymentId(Integer.parseInt(s));
                 paymentRecordService.deleteByPaymentId(Integer.parseInt(s));
                 paymentInfoService.deleteByPrimaryKey(Integer.parseInt(s));
             }
         }
         jsonObject.put("msg","删除成功！");
         return jsonObject.toString();
-    }
-    @GetMapping("payment/detailsList")
-    public String detailsList(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
-        String paymentId = request.getParameter("paymentId");
-        Map<String,Object> map = new HashMap<>();
-        map.put("paymentId",paymentId);
-        model.addAttribute("paymentId",paymentId);
-        model.addAttribute("page",paymentDetailsService.pagedQueryByCondition(dataGrid,map));        ;
-        List<RoleInfo> roleInfoList = roleInfoService.queryByUserId((Integer)request.getSession().getAttribute(UserConstants.LOGIN_USER_ID.name()));
-        if (roleInfoList != null && roleInfoList.size() > 0){
-            model.addAttribute("role",roleInfoList.get(0));
-        }
-        return "views/cost/paymentDetailsList";
     }
 }

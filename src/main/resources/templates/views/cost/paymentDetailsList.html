@@ -7,13 +7,14 @@
         body{background-color: #e7eaec;height: 830px;}
         .divStyle{margin-left: 20px;margin-right: 20px;margin-top: 30px;background-color: white;}
     </style>
-    <!--<script  th:src="@{/js/module/cost/payment.js}"></script>-->
+    <script  th:src="@{/js/module/cost/paymentDetails.js}"></script>
 </head>
 <body>
     <div class="divStyle">
         <div class="ibox float-e-margins">
             <div class="ibox-content">
-                <div style="height: 20px;">
+                <div style="margin-top: 20px;">
+                    <h4 style="text-align: center;">收入详情列表</h4>
                     <input type="hidden" th:value="${paymentId}" id="paymentId"/>
                     <input type="hidden" th:value="${role.isSuper}" id="isSuper" />
                 </div>
@@ -100,7 +101,7 @@
                             </div>
                         </div>
                         <div style="float: right;margin-top:10px;margin-bottom: 10px;">
-                            <button style="width: 80px;" type="button" class="btn btn-default" id="paymentReturn">返回</button>
+                            <button style="width: 80px;" type="button" class="btn btn-default" id="detailsReturn">返回</button>
                         </div>
                     </form>
                 </div>

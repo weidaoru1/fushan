@@ -2,12 +2,15 @@ package com.fushan.service.cost.impl;
 
 import com.fushan.common.util.DataGrid;
 import com.fushan.common.util.PageInfo;
+import com.fushan.entity.PaymentDetails;
 import com.fushan.entity.PaymentInfo;
+import com.fushan.mapper.cost.PaymentDetailsMapper;
 import com.fushan.mapper.cost.PaymentInfoMapper;
 import com.fushan.service.cost.PaymentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +18,8 @@ import java.util.Map;
 public class PaymentInfoServiceImpl implements PaymentInfoService {
     @Autowired
     PaymentInfoMapper paymentInfoMapper;
+    @Autowired
+    PaymentDetailsMapper paymentDetailsMapper;
     @Override
     public int deleteByPrimaryKey(Integer key) {
         return paymentInfoMapper.deleteByPrimaryKey(key);
@@ -37,7 +42,18 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
 
     @Override
     public int insertSelective(PaymentInfo entity) {
-        return paymentInfoMapper.insertSelective(entity);
+        int res = paymentInfoMapper.insertSelective(entity);
+        PaymentDetails details = new PaymentDetails();
+        details.setAmount(entity.getAmount());
+        details.setContact(entity.getContact());
+        details.setCustomerName(entity.getCustomerName());
+        details.setPayee(entity.getPayee());
+        details.setPaymentId(entity.getId());
+        details.setPaymentTime(entity.getPaymentTime());
+        details.setCreateTime(new Date());
+        details.setRemark(entity.getRemark());
+        paymentDetailsMapper.insertSelective(details);
+        return res;
     }
 
     @Override
