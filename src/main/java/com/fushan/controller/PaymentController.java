@@ -5,6 +5,7 @@ import com.fushan.common.util.UserConstants;
 import com.fushan.entity.PaymentInfo;
 import com.fushan.entity.PaymentRecord;
 import com.fushan.entity.RoleInfo;
+import com.fushan.service.cost.PaymentDetailsService;
 import com.fushan.service.cost.PaymentInfoService;
 import com.fushan.service.cost.PaymentRecordService;
 import com.fushan.service.role.RoleInfoService;
@@ -30,6 +31,8 @@ public class PaymentController {
     PaymentRecordService paymentRecordService;
     @Resource
     RoleInfoService roleInfoService;
+    @Resource
+    PaymentDetailsService paymentDetailsService;
     @RequestMapping("cost/paymentList")
     public String PaymentList(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
         List<RoleInfo> roleInfoList = roleInfoService.queryByUserId((Integer)request.getSession().getAttribute(UserConstants.LOGIN_USER_ID.name()));
@@ -102,5 +105,18 @@ public class PaymentController {
         }
         jsonObject.put("msg","删除成功！");
         return jsonObject.toString();
+    }
+    @GetMapping("payment/detailsList")
+    public String detailsList(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
+        String paymentId = request.getParameter("paymentId");
+        Map<String,Object> map = new HashMap<>();
+        map.put("paymentId",paymentId);
+        model.addAttribute("paymentId",paymentId);
+        model.addAttribute("page",paymentDetailsService.pagedQueryByCondition(dataGrid,map));        ;
+        List<RoleInfo> roleInfoList = roleInfoService.queryByUserId((Integer)request.getSession().getAttribute(UserConstants.LOGIN_USER_ID.name()));
+        if (roleInfoList != null && roleInfoList.size() > 0){
+            model.addAttribute("role",roleInfoList.get(0));
+        }
+        return "views/cost/paymentDetailsList";
     }
 }

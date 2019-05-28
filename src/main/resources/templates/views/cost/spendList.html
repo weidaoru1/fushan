@@ -68,7 +68,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="fixed-table-pagination">
+                        <div class="fixed-table-pagination" th:style="${page.list.size() == 0 ? 'display: none;': ''}">
                             <div class="pull-left pagination-detail">
                                 <span class="pagination-info">显示第 <span th:text="${(page.pageNum - 1)* page.pageSize + 1}"></span> 到第
                                     <span th:text="${page.pageNum == page.lastPage ? page.total : page.pageNum * page.pageSize }"></span> 条记录，总共<span th:text="${page.total}"></span>条记录</span> <span
@@ -104,9 +104,6 @@
                                     <li class="page-last " data-th-classappend="${page.pageNum == page.lastPage ? 'disabled': ''}"
                                         th:onclick="'javascript:loadResources(\''+${page.lastPage}+'\''+','+${page.pageSize}+')'"><a href="javascript:void(0)">»</a></li>
                                 </ul>
-                            </div> <br>
-                            <div style="height: 30px;">
-
                             </div>
                         </div>
                     </form>
