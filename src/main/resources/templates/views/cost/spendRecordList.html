@@ -18,23 +18,24 @@
                     <input type="hidden" th:value="${spendId}" id="spendId"/>
                 </div>
                 <h4 style="text-align: center;">支出修改记录</h4>
-                <div class="table-responsive" style="margin-top: 20px;margin-left: 20px;margin-right: 20px;">
+                <div class="table-responsive" style="margin-left: 20px;margin-right: 20px;">
                     <form role="form" class="form-inline" action="">
-                        <table class="table table table-striped table-bordered table-hover" id="table">
+                        <table class="table table table-striped table-bordered table-hover" id="table" data-toggle="table"
+                               data-show-columns="true" data-show-refresh="true">
                             <thead>
                                 <tr>
                                     <th><input type="checkbox"
                                                onclick="$('.ii-checks').prop('checked',($(this).prop('checked') ? true : false ))"
                                                name="input[]"></th>
-                                    <th>序号</th>
-                                    <th>修改人</th>
-                                    <th>支出人</th>
-                                    <th>支出事项</th>
-                                    <th>支出金额</th>
-                                    <th>支出方式</th>
-                                    <th>支出日期</th>
-                                    <th>修改时间</th>
-                                    <th>备注</th>
+                                    <th data-field="index">序号</th>
+                                    <th data-field="userName">修改人</th>
+                                    <th data-field="spendName">支出人</th>
+                                    <th data-field="spendMatters">支出事项</th>
+                                    <th data-field="amount">支出金额</th>
+                                    <th data-field="type">支出方式</th>
+                                    <th data-field="spendTime">支出日期</th>
+                                    <th data-field="createTime">修改时间</th>
+                                    <th data-field="remark" data-visible="false">备注</th>
                                 </tr>
                             </thead>
                             <tbody>
