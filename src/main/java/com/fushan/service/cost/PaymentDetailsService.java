@@ -10,4 +10,5 @@ public interface PaymentDetailsService extends BaseService<PaymentDetails> {
     int updateByPrimaryKeySelective(PaymentDetails record);
     int updateByPrimaryKey(PaymentDetails record);
     int deleteByPaymentId(Integer id);
+    double sumAmountByPyamentId(Integer id);
 }

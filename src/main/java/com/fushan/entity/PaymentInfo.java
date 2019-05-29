@@ -20,7 +20,7 @@ public class PaymentInfo implements Serializable {
      */
     private String payee;
     /**
-     * 收款状态
+     * 收款状态 1:已付清 2 ：未付清
      */
     private Integer status;
     /**

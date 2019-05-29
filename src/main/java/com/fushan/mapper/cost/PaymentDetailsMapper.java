@@ -14,5 +14,6 @@ public interface PaymentDetailsMapper {
     int count(Map<String, Object> map);
     List<PaymentDetails> pagedQuery(Map<String, Object> map);
     int deleteByPaymentId(Integer id);
+    double sumAmountByPyamentId(Integer id);
 
 }

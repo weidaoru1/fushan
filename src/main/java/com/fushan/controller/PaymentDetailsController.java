@@ -1,15 +1,11 @@
 package com.fushan.controller;
-
-import com.fushan.common.util.DataDealUtils;
 import com.fushan.common.util.DataGrid;
 import com.fushan.common.util.UserConstants;
 import com.fushan.entity.PaymentDetails;
 import com.fushan.entity.PaymentInfo;
-import com.fushan.entity.PaymentRecord;
 import com.fushan.entity.RoleInfo;
 import com.fushan.service.cost.PaymentDetailsService;
 import com.fushan.service.cost.PaymentInfoService;
-import com.fushan.service.cost.PaymentRecordService;
 import com.fushan.service.role.RoleInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +27,8 @@ public class PaymentDetailsController {
     RoleInfoService roleInfoService;
     @Resource
     PaymentDetailsService paymentDetailsService;
+    @Resource
+    PaymentInfoService paymentInfoService;
     @RequestMapping("payment/detailsAdd")
     public String detailsAdd(Model model, HttpServletRequest request)throws Exception{
         String paymentId = request.getParameter("paymentId");
@@ -42,10 +39,32 @@ public class PaymentDetailsController {
     public @ResponseBody String save(HttpServletRequest request, PaymentDetails paymentDetails)throws Exception{
         JSONObject jsonObject = new JSONObject();
         paymentDetailsService.insertSelective(paymentDetails);
+        PaymentInfo paymentInfo = paymentInfoService.selectByPrimaryKey(paymentDetails.getPaymentId());
+        double aomunt = paymentDetailsService.sumAmountByPyamentId(paymentDetails.getPaymentId());
+        if (paymentInfo != null){
+            if (aomunt >= paymentInfo.getAmounts()){
+                //已付清
+                paymentInfo.setStatus(1);
+            }
+            paymentInfo.setAmount(aomunt);
+            paymentInfoService.updateByPrimaryKey(paymentInfo);
+        }
         jsonObject.put("status",1);
         jsonObject.put("msg","保存成功！");
         return jsonObject.toString();
     }
+    @RequestMapping("details/edit")
+    public String edit(Model model, HttpServletRequest request)throws Exception{
+        String id = request.getParameter("id");
+        PaymentDetails paymentDetails = new PaymentDetails();
+        if (StringUtils.isNotBlank(id)){
+            paymentDetails = paymentDetailsService.selectByPrimaryKey(Integer.parseInt(id));
+        }
+        model.addAttribute("paymentDetails",paymentDetails);
+        return "views/cost/detailsEdit";
+    }
+    @RequestMapping("details/editSave")
+
 
     @GetMapping("payment/detailsList")
     public String detailsList(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{

@@ -20,14 +20,14 @@ $(function () {
             bootbox.alert("只允许一条数据记录！");
             return false;
         }
-        window.location.href="/cost/paymentEdit?id="+id;
+        window.location.href="/details/edit?id="+id;
     });
 
     $("#paymentSave").click(function () {
         var paymentId = $("#paymentId").val();
         var url = "/details/save";
         if (form1.id.value != ""){
-            url = "/details/edit";
+            url = "/details/editSave";
         }
         if(form1.customerName.value==""){
             form1.customerName.focus();
@@ -108,19 +108,19 @@ $(function () {
             if(!result){
                 return;
             }
-            $.ajax({
-                url:"/payment/deleteById",
-                type:"POST",
-                data:{
-                    ids : check_val.join(";")
-                },
-                dataType:"json",
-                success:function(result){
-                    bootbox.alert(result.msg, function () {
-                        location.assign(getRootPath() + location.pathname);
-                    });
-                }
-            });
+            // $.ajax({
+            //     url:"/payment/deleteById",
+            //     type:"POST",
+            //     data:{
+            //         ids : check_val.join(";")
+            //     },
+            //     dataType:"json",
+            //     success:function(result){
+            //         bootbox.alert(result.msg, function () {
+            //             location.assign(getRootPath() + location.pathname);
+            //         });
+            //     }
+            // });
         });
     });
 });

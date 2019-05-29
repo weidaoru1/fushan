@@ -71,4 +71,9 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
     public int count(Map<String, Object> map) {
         return paymentDetailsMapper.count(map);
     }
+
+    @Override
+    public double sumAmountByPyamentId(Integer id) {
+        return paymentDetailsMapper.sumAmountByPyamentId(id);
+    }
 }
