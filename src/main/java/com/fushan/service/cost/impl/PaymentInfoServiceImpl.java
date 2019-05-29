@@ -75,9 +75,4 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         List<PaymentInfo> list = paymentInfoMapper.pagedQuery(map);
         return new PageInfo<>(startRows,totalRows,grid.getPageSize(),grid.getPageNum(),list);
     }
-
-    @Override
-    public int count(Map<String, Object> map) {
-        return paymentInfoMapper.count(map);
-    }
 }

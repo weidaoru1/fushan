@@ -45,11 +45,6 @@ public class MenuChildrenServiceImpl implements MenuChildrenService {
     }
 
     @Override
-    public int count(Map<String, Object> map) {
-        return menuChildrenMapper.count(map);
-    }
-
-    @Override
     public int insertSelective(MenuChildren entity) {
         return menuChildrenMapper.insertSelective(entity);
     }

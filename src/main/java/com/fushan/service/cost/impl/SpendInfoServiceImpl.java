@@ -49,9 +49,4 @@ public class SpendInfoServiceImpl implements SpendInfoService {
         List<SpendInfo> list = spendInfoMapper.pagedQuery(map);
         return new PageInfo<>(startRows,totalRows,grid.getPageSize(),grid.getPageNum(),list);
     }
-
-    @Override
-    public int count(Map<String, Object> map) {
-        return spendInfoMapper.count(map);
-    }
 }

@@ -88,6 +88,9 @@ $(function () {
     $("#detailsReturn").click(function () {
         window.location.href="/cost/paymentList";
     });
+    $("#paymentDetailsReturn").click(function () {
+        window.location.href="/payment/detailsList?paymentId="+$("#paymentId").val();
+    });
     $("#deleteWindow").click(function () {
         if ($("#isSuper").val() != "1"){
             bootbox.alert("您没有删除权限，请联系系统管理员！");

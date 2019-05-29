@@ -45,11 +45,6 @@ public class UserInfoServiceImpl  implements UserInfoService {
     }
 
     @Override
-    public int count(Map<String, Object> map) {
-        return userInfoMapper.count(map);
-    }
-
-    @Override
     public int deleteByPrimaryKey(Integer id) {
         if (RedisUtils.redisOpen()){
             redisTemplate.setKeySerializer(new StringRedisSerializer());

@@ -1,9 +1,6 @@
 package com.fushan.common.util;
 
-import com.fushan.entity.PaymentInfo;
-import com.fushan.entity.PaymentRecord;
-import com.fushan.entity.SpendInfo;
-import com.fushan.entity.SpendRecord;
+import com.fushan.entity.*;
 
 public class DataDealUtils {
     /**
@@ -117,5 +114,47 @@ public class DataDealUtils {
             }
         }
         return spendRecord;
+    }
+    public static PaydetailsRecord getPaydetailsRecord(PaymentDetails newData,PaymentDetails oldData){
+        PaydetailsRecord paydetailsRecord = null;
+        if(newData != null && oldData != null){
+            if (!newData.getCustomerName().equals(oldData.getCustomerName())){
+                paydetailsRecord = new PaydetailsRecord();
+            }
+            if (!newData.getContact().equals(oldData.getContact())){
+                if (paydetailsRecord == null){
+                    paydetailsRecord = new PaydetailsRecord();
+                }
+            }
+            if (!newData.getPayee().equals(oldData.getPayee())){
+                if (paydetailsRecord == null){
+                    paydetailsRecord = new PaydetailsRecord();
+                }
+            }
+            if (!String.valueOf(newData.getAmount()).equals(String.valueOf(oldData.getAmount()))){
+                if (paydetailsRecord == null){
+                    paydetailsRecord = new PaydetailsRecord();
+                }
+            }
+            if (!DateUtils.dateToStr(newData.getPaymentTime()).equals(DateUtils.dateToStr(oldData.getPaymentTime()))){
+                if (paydetailsRecord == null){
+                    paydetailsRecord = new PaydetailsRecord();
+                }
+            }
+            if (!newData.getRemark().equals(oldData.getRemark())){
+                if (paydetailsRecord == null){
+                    paydetailsRecord = new PaydetailsRecord();
+                }
+            }
+            if (paydetailsRecord != null){
+                paydetailsRecord.setCustomerName(newData.getCustomerName());
+                paydetailsRecord.setContact(newData.getContact());
+                paydetailsRecord.setPayee(newData.getPayee());
+                paydetailsRecord.setAmount(newData.getAmount());
+                paydetailsRecord.setPaymentTime(newData.getPaymentTime());
+                paydetailsRecord.setRemark(newData.getRemark());
+            }
+        }
+        return paydetailsRecord;
     }
 }

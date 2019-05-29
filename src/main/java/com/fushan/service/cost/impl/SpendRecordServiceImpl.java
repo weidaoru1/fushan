@@ -64,9 +64,4 @@ public class SpendRecordServiceImpl implements SpendRecordService {
         List<SpendRecord> list = spendRecordMapper.pagedQuery(map);
         return new PageInfo<>(startRows,totalRows,grid.getPageSize(),grid.getPageNum(),list);
     }
-
-    @Override
-    public int count(Map<String, Object> map) {
-        return spendRecordMapper.count(map);
-    }
 }

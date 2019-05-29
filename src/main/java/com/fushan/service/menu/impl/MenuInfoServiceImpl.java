@@ -53,11 +53,6 @@ public class MenuInfoServiceImpl implements MenuInfoService {
     }
 
     @Override
-    public int count(Map<String, Object> map) {
-        return menuInfoMapper.count(map);
-    }
-
-    @Override
     public int insertSelective(MenuInfo entity) {
         return menuInfoMapper.insertSelective(entity);
     }

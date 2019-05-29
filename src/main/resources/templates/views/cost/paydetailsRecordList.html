@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="common/common :: common"></div>
+    <!--<div th:replace="editPayment/editPayment :: editPayment"></div>-->
     <style>
         body{background-color: #e7eaec;height: 830px;}
         .divStyle{margin-left: 20px;margin-right: 20px;margin-top: 30px;background-color: white;}
@@ -12,22 +13,10 @@
     <div class="divStyle">
         <div class="ibox float-e-margins">
             <div class="ibox-content">
-                <div style="height: 10px;">
+                <div style="height: 20px;">
                     <input type="hidden" th:value="${paymentId}" id="paymentId"/>
-                    <input type="hidden" th:value="${role.isSuper}" id="isSuper" />
                 </div>
-                <h4 style="text-align: center;">收入详情列表</h4>
-                <div class="doc-buttons" style="margin-left: 20px;">
-                    <button id="addWindow" class="btn btn-primary" type="button">
-                        <i class="glyphicon glyphicon-plus"></i>&nbsp;新增
-                    </button>
-                    <button id="editWindow" class="btn btn-primary" type="button">
-                        <i class="glyphicon glyphicon-edit"></i>&nbsp;编辑
-                    </button>
-                    <button id = "deleteWindow" class="btn btn-primary" type="button">
-                        <i class="glyphicon glyphicon-trash"></i>&nbsp;删除
-                    </button>
-                </div>
+                <h4 style="text-align: center;">收入详情修改记录</h4>
                 <div class="table-responsive" style="margin-left: 20px;margin-right: 20px;">
                     <form role="form" class="form-inline" action="">
                         <table class="table table table-striped table-bordered table-hover" id="table" data-toggle="table"
@@ -38,29 +27,28 @@
                                                onclick="$('.ii-checks').prop('checked',($(this).prop('checked') ? true : false ))"
                                                name="input[]"></th>
                                     <th data-field="index">序号</th>
+                                    <th data-field="userName">修改人</th>
                                     <th data-field="customerName">客户姓名</th>
                                     <th data-field="contact">联系方式</th>
                                     <th data-field="payee">收款人</th>
                                     <th data-field="amount">金额</th>
                                     <th data-field="paymentTime">收款日期</th>
-                                    <th data-field="createTime">创建日期</th>
+                                    <th data-field="createTime">修改时间</th>
                                     <th data-field="remark" data-visible="false">备注</th>
-                                    <th data-field="control">操作</th>
-
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="paymentDetails : ${page.list}">
-                                    <td><input type="checkbox" class="ii-checks" name="check" th:value="${paymentDetails.id}"></td>
-                                    <td th:text="${paymentDetailsStat.count}"></td>
-                                    <td th:text="${paymentDetails.customerName}"></td>
-                                    <td th:text="${paymentDetails.contact}"></td>
-                                    <td th:text="${paymentDetails.payee}"></td>
-                                    <td th:text="${paymentDetails.amount}"></td>
-                                    <td th:text="${#dates.format(paymentDetails.paymentTime, 'yyyy-MM-dd')}"></td>
-                                    <td th:text="${#dates.format(paymentDetails.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                    <td th:text="${paymentDetails.remark}"></td>
-                                    <td><a th:href="@{'/payment/detailsRecordList?paydetailsId='+ ${paymentDetails.id}}">修改记录</a></td>
+                                <tr th:each="paymentRecord : ${page.list}">
+                                    <td><input type="checkbox" class="ii-checks" name="check" th:value="${paymentRecord.id}"></td>
+                                    <td th:text="${paymentRecordStat.count}"></td>
+                                    <td th:text="${paymentRecord.userName}"></td>
+                                    <td th:text="${paymentRecord.customerName}"></td>
+                                    <td th:text="${paymentRecord.contact}"></td>
+                                    <td th:text="${paymentRecord.payee}"></td>
+                                    <td th:text="${paymentRecord.amount}"></td>
+                                    <td th:text="${#dates.format(paymentRecord.paymentTime, 'yyyy-MM-dd')}"></td>
+                                    <td th:text="${#dates.format(paymentRecord.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${paymentRecord.remark}"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -103,7 +91,7 @@
                             </div>
                         </div>
                         <div style="float: right;margin-top:10px;margin-bottom: 10px;">
-                            <button style="width: 80px;" type="button" class="btn btn-default" id="detailsReturn">返回</button>
+                            <button style="width: 80px;" type="button" class="btn btn-default" id="paymentDetailsReturn">返回</button>
                         </div>
                     </form>
                 </div>

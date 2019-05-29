@@ -66,9 +66,4 @@ public class PaymentRecordServiceImpl implements PaymentRecordService {
         List<PaymentRecord> list = paymentRecordMapper.pagedQuery(map);
         return new PageInfo<>(startRows,totalRows,grid.getPageSize(),grid.getPageNum(),list);
     }
-
-    @Override
-    public int count(Map<String, Object> map) {
-        return paymentRecordMapper.count(map);
-    }
 }

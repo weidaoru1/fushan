@@ -66,12 +66,6 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
         List<PaymentDetails> list = paymentDetailsMapper.pagedQuery(map);
         return new PageInfo<>(startRows,totalRows,grid.getPageSize(),grid.getPageNum(),list);
     }
-
-    @Override
-    public int count(Map<String, Object> map) {
-        return paymentDetailsMapper.count(map);
-    }
-
     @Override
     public double sumAmountByPyamentId(Integer id) {
         return paymentDetailsMapper.sumAmountByPyamentId(id);
