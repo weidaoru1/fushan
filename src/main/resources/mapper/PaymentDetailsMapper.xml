@@ -16,6 +16,9 @@
     id, payment_id, customer_name, contact, payee, amount, create_time, payment_time,
     remark
   </sql>
+  <select id="queryListByPaymentId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from tb_payment_details where payment_id = #{paymentId,jdbcType=INTEGER}
+  </select>
   <select id="sumAmountByPyamentId" resultType="java.lang.Double" parameterType="java.lang.Integer">
       select sum(amount) as amount from tb_payment_details where payment_id = #{paymentId,jdbcType=INTEGER}
   </select>

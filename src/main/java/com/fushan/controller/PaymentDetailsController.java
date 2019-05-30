@@ -51,6 +51,9 @@ public class PaymentDetailsController {
             if (aomunt >= paymentInfo.getAmounts()){
                 //已付清
                 paymentInfo.setStatus(1);
+            }else{
+                //未付清
+                paymentInfo.setStatus(2);
             }
             paymentInfo.setAmount(aomunt);
             paymentInfoService.updateByPrimaryKey(paymentInfo);
@@ -80,6 +83,9 @@ public class PaymentDetailsController {
             if (aomunt >= paymentInfo.getAmounts()){
                 //已付清
                 paymentInfo.setStatus(1);
+            }else{
+                //未付清
+                paymentInfo.setStatus(2);
             }
             paymentInfo.setAmount(aomunt);
             paymentInfoService.updateByPrimaryKey(paymentInfo);
@@ -93,6 +99,37 @@ public class PaymentDetailsController {
         }
         jsonObject.put("status",1);
         jsonObject.put("msg","保存成功！");
+        return jsonObject.toString();
+    }
+    @RequestMapping("details/detailsDelete")
+    public @ResponseBody String delete(HttpServletRequest request)throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        String ids = request.getParameter("ids");
+        String paymentId = request.getParameter("paymentId");
+        if (StringUtils.isNotBlank(ids)){
+            String[] id = ids.split(";");
+            for (String s : id){
+                paydetailsRecordService.deleteByDetailsId(Integer.parseInt(s));
+                paymentDetailsService.deleteByPrimaryKey(Integer.parseInt(s));
+            }
+            if (StringUtils.isNotBlank(paymentId)){
+                double aomunt = paymentDetailsService.sumAmountByPyamentId(Integer.parseInt(paymentId));
+                PaymentInfo paymentInfo = paymentInfoService.selectByPrimaryKey(Integer.parseInt(paymentId));
+                if (paymentInfo != null){
+                    if (aomunt >= paymentInfo.getAmounts()){
+                        //已付清
+                        paymentInfo.setStatus(1);
+                    }else{
+                        //未付清
+                        paymentInfo.setStatus(2);
+                    }
+                    paymentInfo.setAmount(aomunt);
+                    paymentInfoService.updateByPrimaryKey(paymentInfo);
+                }
+            }
+        }
+        jsonObject.put("status",1);
+        jsonObject.put("msg","删除成功！");
         return jsonObject.toString();
     }
 

@@ -2,6 +2,8 @@ package com.fushan.service.cost;
 import com.fushan.entity.PaymentDetails;
 import com.fushan.service.BaseService;
 
+import java.util.List;
+
 public interface PaymentDetailsService extends BaseService<PaymentDetails> {
     int deleteByPrimaryKey(Integer id);
     int insert(PaymentDetails record);
@@ -11,4 +13,5 @@ public interface PaymentDetailsService extends BaseService<PaymentDetails> {
     int updateByPrimaryKey(PaymentDetails record);
     int deleteByPaymentId(Integer id);
     double sumAmountByPyamentId(Integer id);
+    List<PaymentDetails> queryListByPaymentId(Integer id);
 }

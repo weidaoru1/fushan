@@ -42,16 +42,16 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group" id="amountId" th:style="${paymentInfo.status == 1 ?  'display: none': ''}">
+            <div class="form-group">
                 <label for="amounts" class="col-sm-2 control-label">总金额</label>
                 <div class="col-sm-10">
-                    <input style="width: 780px;" type="number" th:value="${paymentInfo.amount}" class="form-control" id="amounts" name="amounts">
+                    <input style="width: 780px;" type="number" th:value="${paymentInfo.amounts}" class="form-control" id="amounts" name="amounts">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display: none;">
                 <label for="amount" class="col-sm-2 control-label">已收金额</label>
                 <div class="col-sm-10">
-                    <input style="width: 780px;" type="number" th:value="${paymentInfo.amount}" class="form-control" id="amount" name="amount">
+                    <input style="width: 780px;"  type="number" th:value="${paymentInfo.amount}" class="form-control" id="amount" name="amount">
                 </div>
             </div>
             <div class="form-group">

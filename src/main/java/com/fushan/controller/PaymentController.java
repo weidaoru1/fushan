@@ -6,6 +6,7 @@ import com.fushan.entity.PaymentDetails;
 import com.fushan.entity.PaymentInfo;
 import com.fushan.entity.PaymentRecord;
 import com.fushan.entity.RoleInfo;
+import com.fushan.service.cost.PaydetailsRecordService;
 import com.fushan.service.cost.PaymentDetailsService;
 import com.fushan.service.cost.PaymentInfoService;
 import com.fushan.service.cost.PaymentRecordService;
@@ -34,6 +35,8 @@ public class PaymentController {
     RoleInfoService roleInfoService;
     @Resource
     PaymentDetailsService paymentDetailsService;
+    @Resource
+    PaydetailsRecordService paydetailsRecordService;
     @RequestMapping("cost/paymentList")
     public String PaymentList(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
         List<RoleInfo> roleInfoList = roleInfoService.queryByUserId((Integer)request.getSession().getAttribute(UserConstants.LOGIN_USER_ID.name()));
@@ -100,6 +103,12 @@ public class PaymentController {
         if (StringUtils.isNotBlank(id)) {
             String[] ids = id.split(";");
             for(String s : ids){
+                List<PaymentDetails> list = paymentDetailsService.queryListByPaymentId(Integer.parseInt(s));
+                if (list != null && list.size() > 0){
+                    for (PaymentDetails p : list){
+                        paydetailsRecordService.deleteByDetailsId(p.getId());
+                    }
+                }
                 paymentDetailsService.deleteByPaymentId(Integer.parseInt(s));
                 paymentRecordService.deleteByPaymentId(Integer.parseInt(s));
                 paymentInfoService.deleteByPrimaryKey(Integer.parseInt(s));

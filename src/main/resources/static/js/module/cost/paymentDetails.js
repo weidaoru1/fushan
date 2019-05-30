@@ -91,7 +91,7 @@ $(function () {
     $("#paymentDetailsReturn").click(function () {
         window.location.href="/payment/detailsList?paymentId="+$("#paymentId").val();
     });
-    $("#deleteWindow").click(function () {
+    $("#detailsDeleteWindow").click(function () {
         if ($("#isSuper").val() != "1"){
             bootbox.alert("您没有删除权限，请联系系统管理员！");
             return;
@@ -111,19 +111,20 @@ $(function () {
             if(!result){
                 return;
             }
-            // $.ajax({
-            //     url:"/payment/deleteById",
-            //     type:"POST",
-            //     data:{
-            //         ids : check_val.join(";")
-            //     },
-            //     dataType:"json",
-            //     success:function(result){
-            //         bootbox.alert(result.msg, function () {
-            //             location.assign(getRootPath() + location.pathname);
-            //         });
-            //     }
-            // });
+            $.ajax({
+                url:"/details/detailsDelete",
+                type:"POST",
+                data:{
+                    ids : check_val.join(";"),
+                    paymentId : $("#paymentId").val()
+                },
+                dataType:"json",
+                success:function(result){
+                    bootbox.alert(result.msg, function () {
+                        location.assign(getRootPath() + location.pathname);
+                    });
+                }
+            });
         });
     });
 });

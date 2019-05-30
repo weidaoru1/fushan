@@ -25,11 +25,6 @@ public class DataDealUtils {
                     paymentRecord = new PaymentRecord();
                 }
             }
-            if (!String.valueOf(newData.getAmount()).equals(String.valueOf(oldData.getAmount()))){
-                if (paymentRecord == null){
-                    paymentRecord = new PaymentRecord();
-                }
-            }
             if (newData.getType() != oldData.getType()){
                 if (paymentRecord == null){
                     paymentRecord = new PaymentRecord();
@@ -64,7 +59,6 @@ public class DataDealUtils {
                 paymentRecord.setCustomerName(newData.getCustomerName());
                 paymentRecord.setContact(newData.getContact());
                 paymentRecord.setPayee(newData.getPayee());
-                paymentRecord.setAmount(newData.getAmount());
                 paymentRecord.setType(newData.getType());
                 paymentRecord.setPaymentTime(newData.getPaymentTime());
                 paymentRecord.setDetailsDes(newData.getDetailsDes());

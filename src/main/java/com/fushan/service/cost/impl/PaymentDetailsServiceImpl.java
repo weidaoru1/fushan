@@ -22,6 +22,11 @@ public class PaymentDetailsServiceImpl implements PaymentDetailsService {
     }
 
     @Override
+    public List<PaymentDetails> queryListByPaymentId(Integer id) {
+        return paymentDetailsMapper.queryListByPaymentId(id);
+    }
+
+    @Override
 
     public int deleteByPrimaryKey(Integer id) {
         return paymentDetailsMapper.deleteByPrimaryKey(id);
