@@ -1,6 +1,10 @@
 package com.fushan.common.util;
 
 import com.fushan.entity.*;
+import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+
+import java.util.Date;
 
 public class DataDealUtils {
     /**
@@ -150,5 +154,15 @@ public class DataDealUtils {
             }
         }
         return paydetailsRecord;
+    }
+    public static JSONObject dataToJson(Object object){
+        if (object == null){
+            return null;
+        }
+        JsonConfig cfg = new JsonConfig();
+        cfg.setExcludes(new String[]{"handler","hibernateLazyInitializer"});
+        cfg.registerJsonValueProcessor(Date.class, new DateJsonValueProcessor());
+        JSONObject jsonObject = JSONObject.fromObject(object,cfg);
+        return jsonObject;
     }
 }

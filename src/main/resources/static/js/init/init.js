@@ -70,4 +70,11 @@ function e(e) {
         marginLeft: 20 + "px"
     }, "fast")
 }
+//初始化
+function responseHandler(res) {
+    return {
+        "rows" : res.list,
+        "total" : res.total
+    }
+}
 
