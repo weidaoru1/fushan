@@ -1,15 +1,14 @@
 package com.fushan.controller;
-import com.fushan.common.util.DataGrid;
-import com.fushan.common.util.MD5utils;
-import com.fushan.common.util.UserConstants;
+import com.fushan.common.util.*;
 import com.fushan.entity.RoleInfo;
 import com.fushan.entity.RoleUser;
 import com.fushan.entity.UserInfo;
 import com.fushan.service.role.RoleInfoService;
 import com.fushan.service.role.RoleUserService;
 import com.fushan.service.user.UserInfoService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +28,52 @@ public class LoginController {
     RoleInfoService roleInfoService;
     @RequestMapping("/user/userList")
     public String userList(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
-        model.addAttribute("page",userInfoService.pagedQuery(dataGrid));
         return "views/user/userList";
     }
-
+    @RequestMapping("/user/queryUserList")
+    public @ResponseBody String queryUserList(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
+        PageInfo<UserInfo> list = userInfoService.pagedQuery(dataGrid);
+        List<UserInfo> userInfoList = list.getList();
+        JSONObject object = new JSONObject();
+        JSONArray array = new JSONArray();
+        if (userInfoList != null && userInfoList.size() > 0){
+            for(UserInfo u : userInfoList){
+                JSONObject json = new JSONObject();
+                json.put("id",u.getId());
+                json.put("userName",u.getUserName());
+                json.put("realName",u.getRealName());
+                json.put("password",u.getPassword());
+                json.put("tel",u.getTel());
+                json.put("des",u.getDes());
+                List<RoleInfo> roleInfos =  roleInfoService.queryByUserId(u.getId());
+                if (roleInfos != null && roleInfos.size() > 0){
+                    json.put("roleId",roleInfos.get(0).getId());
+                    json.put("roleName",roleInfos.get(0).getRoleName());
+                }
+                array.add(json);
+            }
+        }
+        object.put("pageNum",list.getPageNum());
+        object.put("pageSize",list.getPageSize());
+        object.put("size",list.getSize());
+        object.put("total",list.getTotal());
+        object.put("pages",list.getPages());
+        object.put("firstPage",list.getFirstPage());
+        object.put("prePage",list.getPrePage());
+        object.put("nextPage",list.getNextPage());
+        object.put("lastPage",list.getLastPage());
+        object.put("list",array);
+        return DataDealUtils.dataToJson(object).toString();
+    }
+    @RequestMapping("/user/queryRoleByUserId")
+    public @ResponseBody String queryRole(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
+        String userId = request.getParameter("userId");
+        if (StringUtils.isNotBlank(userId)){
+            List<RoleInfo> list = roleInfoService.queryByUserId(Integer.parseInt(userId));
+            return DataDealUtils.dataToJson(list.get(0)).toString();
+        }
+        return null;
+    }
     @RequestMapping("/")
     public String loginNew(Model model, HttpServletRequest request)throws Exception{
         return "login";

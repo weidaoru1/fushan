@@ -11,9 +11,7 @@ import com.fushan.service.cost.PaymentDetailsService;
 import com.fushan.service.cost.PaymentInfoService;
 import com.fushan.service.cost.PaymentRecordService;
 import com.fushan.service.role.RoleInfoService;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,79 +50,72 @@ public class PaymentController {
             map.put("status",status);
         }
         JSONObject object = DataDealUtils.dataToJson(paymentInfoService.pagedQueryByCondition(dataGrid,map));
-        System.out.println(object.toString());
         return object.toString();
     }
 
-    @GetMapping("cost/paymentRecordList")
-    public String paymentRecord(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
+    @RequestMapping("payment/paymentRecordById")
+    public @ResponseBody String paymentRecordData(Model model, HttpServletRequest request, DataGrid dataGrid){
         String paymentId = request.getParameter("paymentId");
         Map<String,Object> map = new HashMap<>();
-        map.put("paymentId",paymentId);
-        model.addAttribute("paymentId",paymentId);
-        model.addAttribute("page",paymentRecordService.pagedQueryByCondition(dataGrid,map));
-        return "views/cost/paymentRecordList";
-    }
-
-    @RequestMapping("cost/paymentAdd")
-    public String payment(Model model, HttpServletRequest request)throws Exception{
-        return "views/cost/paymentAdd";
-    }
-    @RequestMapping("cost/paymentEdit")
-    public String paymentEdit(Model model, HttpServletRequest request)throws Exception{
-        String id = request.getParameter("id");
-        PaymentInfo paymentInfo = null;
-        if (StringUtils.isNotBlank(id)){
-            paymentInfo = paymentInfoService.selectByPrimaryKey(Integer.parseInt(id));
+        if (StringUtils.isNotBlank(paymentId)){
+            map.put("paymentId",paymentId);
         }
-        if(paymentInfo != null){
-            model.addAttribute("paymentInfo",paymentInfo);
-        }
-        return "views/cost/paymentEdit";
+        JSONObject object = DataDealUtils.dataToJson(paymentRecordService.pagedQueryByCondition(dataGrid,map));
+        return object.toString();
     }
-//    @RequestMapping("payment/save")
-//    public @ResponseBody String save(HttpServletRequest request,PaymentInfo paymentInfo)throws Exception{
-//        JSONObject jsonObject = new JSONObject();
-//        paymentInfoService.insertSelective(paymentInfo);
-//        jsonObject.put("status",1);
-//        jsonObject.put("msg","保存成功！");
-//        return jsonObject.toString();
-//    }
-//    @RequestMapping("payment/edit")
-//    public @ResponseBody String edit(HttpServletRequest request,PaymentInfo paymentInfo)throws Exception{
-//        JSONObject jsonObject = new JSONObject();
-//        PaymentInfo oldData = paymentInfoService.selectByPrimaryKey(paymentInfo.getId());
-//        PaymentRecord paymentRecord = DataDealUtils.getPaymentRecord(paymentInfo,oldData);
-//        if(paymentRecord != null){
-//            paymentRecord.setPaymentId(paymentInfo.getId());
-//            paymentRecord.setUserName((String)request.getSession().getAttribute(UserConstants.LOGIN_USER_NAME.name()));
-//            paymentRecord.setCreateTime(new Date());
-//            paymentRecordService.insertSelective(paymentRecord);
-//        }
-//        paymentInfoService.updateByPrimaryKey(paymentInfo);
-//        jsonObject.put("status",1);
-//        jsonObject.put("msg","保存成功！");
-//        return jsonObject.toString();
-//    }
-//    @RequestMapping("payment/deleteById")
-//    public  @ResponseBody String deleteById(HttpServletRequest request)throws Exception{
-//        JSONObject jsonObject = new JSONObject();
-//        String id = request.getParameter("ids");
-//        if (StringUtils.isNotBlank(id)) {
-//            String[] ids = id.split(";");
-//            for(String s : ids){
-//                List<PaymentDetails> list = paymentDetailsService.queryListByPaymentId(Integer.parseInt(s));
-//                if (list != null && list.size() > 0){
-//                    for (PaymentDetails p : list){
-//                        paydetailsRecordService.deleteByDetailsId(p.getId());
-//                    }
-//                }
-//                paymentDetailsService.deleteByPaymentId(Integer.parseInt(s));
-//                paymentRecordService.deleteByPaymentId(Integer.parseInt(s));
-//                paymentInfoService.deleteByPrimaryKey(Integer.parseInt(s));
-//            }
-//        }
-//        jsonObject.put("msg","删除成功！");
-//        return jsonObject.toString();
-//    }
+    @RequestMapping("payment/paymentDetailsById")
+    public @ResponseBody String paymentDetailsById(Model model, HttpServletRequest request, DataGrid dataGrid){
+        String paymentId = request.getParameter("paymentId");
+        Map<String,Object> map = new HashMap<>();
+        if (StringUtils.isNotBlank(paymentId)){
+            map.put("paymentId",paymentId);
+        }
+        JSONObject object = DataDealUtils.dataToJson(paymentDetailsService.pagedQueryByCondition(dataGrid,map));
+        return object.toString();
+    }
+    @RequestMapping("payment/save")
+    public @ResponseBody String save(HttpServletRequest request,PaymentInfo paymentInfo)throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        paymentInfoService.insertSelective(paymentInfo);
+        jsonObject.put("status",1);
+        jsonObject.put("msg","保存成功！");
+        return jsonObject.toString();
+    }
+    @RequestMapping("payment/edit")
+    public @ResponseBody String edit(HttpServletRequest request,PaymentInfo paymentInfo)throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        PaymentInfo oldData = paymentInfoService.selectByPrimaryKey(paymentInfo.getId());
+        PaymentRecord paymentRecord = DataDealUtils.getPaymentRecord(paymentInfo,oldData);
+        if(paymentRecord != null){
+            paymentRecord.setPaymentId(paymentInfo.getId());
+            paymentRecord.setUserName((String)request.getSession().getAttribute(UserConstants.LOGIN_USER_NAME.name()));
+            paymentRecord.setCreateTime(new Date());
+            paymentRecordService.insertSelective(paymentRecord);
+        }
+        paymentInfoService.updateByPrimaryKey(paymentInfo);
+        jsonObject.put("status",1);
+        jsonObject.put("msg","保存成功！");
+        return jsonObject.toString();
+    }
+    @RequestMapping("payment/deleteById")
+    public  @ResponseBody String deleteById(HttpServletRequest request)throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("ids");
+        if (StringUtils.isNotBlank(id)) {
+            String[] ids = id.split(";");
+            for(String s : ids){
+                List<PaymentDetails> list = paymentDetailsService.queryListByPaymentId(Integer.parseInt(s));
+                if (list != null && list.size() > 0){
+                    for (PaymentDetails p : list){
+                        paydetailsRecordService.deleteByDetailsId(p.getId());
+                    }
+                }
+                paymentDetailsService.deleteByPaymentId(Integer.parseInt(s));
+                paymentRecordService.deleteByPaymentId(Integer.parseInt(s));
+                paymentInfoService.deleteByPrimaryKey(Integer.parseInt(s));
+            }
+        }
+        jsonObject.put("msg","删除成功！");
+        return jsonObject.toString();
+    }
 }

@@ -62,6 +62,7 @@ public class DataDealUtils {
             if (paymentRecord != null){
                 paymentRecord.setCustomerName(newData.getCustomerName());
                 paymentRecord.setContact(newData.getContact());
+                paymentRecord.setAmounts(newData.getAmounts());
                 paymentRecord.setPayee(newData.getPayee());
                 paymentRecord.setType(newData.getType());
                 paymentRecord.setPaymentTime(newData.getPaymentTime());

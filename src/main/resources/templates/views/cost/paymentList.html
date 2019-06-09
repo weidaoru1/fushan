@@ -28,30 +28,31 @@
                 <div style="height: 20px;">
                     <input type="hidden" th:value="${role.isSuper}" id="isSuper" />
                 </div>
-                <div class="doc-buttons" style="margin-left: 20px;">
-                    <button id="addWindow" class="btn btn-primary" type="button">
-                        <i class="glyphicon glyphicon-plus"></i>&nbsp;新增
-                    </button>
-                    <button id="editWindow" class="btn btn-primary" type="button">
-                        <i class="glyphicon glyphicon-edit"></i>&nbsp;编辑
-                    </button>
-                    <button id = "deleteWindow" class="btn btn-primary" type="button">
-                        <i class="glyphicon glyphicon-trash"></i>&nbsp;删除
-                    </button>
-                    <label style="margin-left: 30px;">收款状态&nbsp;:&nbsp;</label>
+                <div class="doc-buttons">
+                    <label style="margin-left: 20px;">收款状态&nbsp;:&nbsp;</label>
                     <select style="height: 33px;width: 120px;" id="status" name="status">
                         <option value ="">请选择</option>
                         <option value ="1">已付清</option>
                         <option value ="2">未付清</option>
                     </select>
-                    <button id = "dateQuerySearch" class="btn btn-primary" type="button" style="margin-left: 30px;">
+                    <button id = "querySearch" class="btn btn-primary" type="button" style="margin-left: 30px;">
                         <i class="glyphicon glyphicon-search"></i>&nbsp; 查询
                     </button>
                 </div>
                 <div class="table-responsive" style="margin-left: 20px;margin-right: 20px;">
-                    <form role="form" class="form-inline" action="">
-                        <table class="table table table-striped table-bordered table-hover" id="myTable" data-toggle="table"
-                               data-show-columns="true" data-show-refresh="true">
+                    <form role="form" class="form-inline" action="" >
+                        <div class="doc-buttons" id="toolbar">
+                            <button id="addWindow" class="btn btn-primary" type="button">
+                                <i class="glyphicon glyphicon-plus"></i>&nbsp;新增
+                            </button>
+                            <button id="editWindow" class="btn btn-primary" type="button">
+                                <i class="glyphicon glyphicon-edit"></i>&nbsp;编辑
+                            </button>
+                            <button id = "deleteWindow" class="btn btn-primary" type="button">
+                                <i class="glyphicon glyphicon-trash"></i>&nbsp;删除
+                            </button>
+                        </div>
+                        <table class="table table table-striped table-bordered table-hover" id="myTable">
                         </table>
                     </form>
                 </div>
@@ -128,12 +129,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" id="userSave">保存</button>
+                    <button type="button" class="btn btn-primary" id="paymentSave">保存</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
-
     <script type="text/javascript">
             $("#myTable").bootstrapTable({
                 contentType: "application/x-www-form-urlencoded", //不设置时会默认text/plain，request.getParameter()是取不到值的
@@ -151,18 +151,29 @@
                 pageSize: 10,                       //每页的记录行数（*）
                 pageList: [10, 20],                //可供选择的每页的行数（*）
                 striped: true,                    //是否显示行间隔色
-                cache: false,
+                showRefresh: true,               //是否显示刷新按钮
+                showToggle:true,                 //是否显示详细视图和列表视图
                 showColumns: true,                //是否显示所有的列
                 uniqueId: "ID",                   //每一行的唯一标识，一般为主键列
                 paginationPreText: "上一页",
                 paginationNextText: "下一页",
+                paginationFirstText: "首页",
+                paginationLastText: "末页",
                 queryParams: queryParams,
                 responseHandler: responseHandler,
                 columns: [{
                     checkbox: true
                 },{
                     field: 'id',
-                    title: 'ID'
+                    title: 'ID',
+                    visible: false
+                },{
+                    field: 'details',
+                    title: '详情',
+                    formatter : function (value,row,index) {
+                        var res = "<a title='收入详情' onclick=\"queryDetails('" + row.id + "')\"><span class=\"glyphicon glyphicon-th-list\"></span></a>";
+                        return res
+                    }
                 },{
                     field: 'customerName',
                     title: '客户姓名'
@@ -227,7 +238,7 @@
                     title: '备注',
                     visible: false
                 },{
-                    field: 'price',
+                    field: 'id',
                     title: '操作',
                     width: 120,
                     align: 'center',
@@ -239,9 +250,7 @@
         function actionFormatter(value, row, index) {
             var id = value;
             var result = "";
-            result += "<a href='javascript:;' class='btn btn-xs green' onclick=\"EditViewById('" + id + "', view='view')\" title='查看'><span class='glyphicon glyphicon-search'></span></a>";
-            result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"EditViewById('" + id + "')\" title='编辑'><span class='glyphicon glyphicon-pencil'></span></a>";
-            result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"DeleteByIds('" + id + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
+            result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"EditViewById('" + id + "')\" title='修改记录'><span class='glyphicon glyphicon-pencil'></span></a>";
             return result;
         }
         //查询条件
@@ -256,5 +265,45 @@
             }
         }
     </script>
+    <!-- 模态框（修改记录） -->
+    <div class="modal fade" id="recordModal"  role="dialog" aria-labelledby="paymentRecordModal" aria-hidden="true">
+        <div class="modal-dialog"  style="width: 95%;">
+            <div class="modal-content">
+                <div class="modal-header" style="height: 50px;background-color: #1872ab">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="paymentRecordModal"></h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" class="form-inline" action="" id="recordForm">
+                        <table class="table table table-striped table-bordered table-hover" id="recordTable">
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- 模态框（收入详情） -->
+    <div class="modal fade" id="detailsModal"  data-target="#identifier"  role="dialog" aria-labelledby="paymentDetailsModal" aria-hidden="true">
+        <div class="modal-dialog"  style="width: 95%;">
+            <div class="modal-content">
+                <div class="modal-header" style="height: 50px;background-color: #1872ab">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="paymentDetailsModal"></h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" class="form-inline" action="" id="detailsForm">
+                        <table class="table table table-striped table-bordered table-hover" id="detailsTable">
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 </body>
 </html>

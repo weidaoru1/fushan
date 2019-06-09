@@ -28,6 +28,10 @@ public class PaymentRecord implements Serializable {
      */
     private String payee;
     /**
+     * 总金额
+     */
+    private Double amounts;
+    /**
      * 收款方式 1：现金 2：支付宝 3：微信 4：转账
      */
     private Integer type;
@@ -130,6 +134,14 @@ public class PaymentRecord implements Serializable {
 
     public String getRemark() {
         return remark;
+    }
+
+    public Double getAmounts() {
+        return amounts;
+    }
+
+    public void setAmounts(Double amounts) {
+        this.amounts = amounts;
     }
 
     public void setRemark(String remark) {
