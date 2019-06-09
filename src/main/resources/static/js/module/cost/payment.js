@@ -169,6 +169,8 @@ $(function () {
     $("#paymentReturn").click(function () {
         window.location.href="/cost/paymentList";
     });
+    //详情添加
+
 });
 function EditViewById(id) {
     //销毁表格数据
