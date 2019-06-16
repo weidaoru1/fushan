@@ -68,7 +68,7 @@
                     <h4 class="modal-title" id="paymentModalLabel"></h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" name="form1" role="form">
+                    <form class="form-horizontal" name="form1" role="form" id="paymentForm">
                         <div class="form-group" style="margin-left: -30px;margin-right: 30px;">
                             <label class="col-sm-2 control-label" for="customerName">客户姓名&nbsp;<span style="color: red;">*</span></label>
                             <div class="col-sm-4">
@@ -307,6 +307,78 @@
                     </div>
                     <form role="form" class="form-inline" action="" id="detailsForm">
                         <table class="table table table-striped table-bordered table-hover" id="detailsTable">
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- 模态框（详情添加） -->
+    <div class="modal fade" id="detailsAddModal"  role="dialog" aria-labelledby="detailsAddModalLabel" aria-hidden="true">
+        <div class="modal-dialog"  style="width: 860px;">
+            <div class="modal-content">
+                <div class="modal-header" style="height: 50px;background-color: #1872ab">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="detailsAddModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <div><input type="hidden" id="detailsPaymentId"/></div>
+                    <form class="form-horizontal" name="form2" role="form" id="detailsAddForm">
+                        <div class="form-group" style="margin-left: -30px;margin-right: 30px;">
+                            <label class="col-sm-2 control-label" for="detailsCustomerName">客户姓名&nbsp;&nbsp;<span style="color: red;">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="detailsCustomerName" name="detailsCustomerName" placeholder="请输入客户姓名"/>
+                            </div>
+                            <label class="col-sm-2 control-label" for="detailsContact">联系方式</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="detailsContact" name="detailsContact" placeholder="请输入联系方式"/>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-left: -30px;margin-right: 30px;">
+                            <label class="col-sm-2 control-label" for="detailsPayee">收款人&nbsp;&nbsp;<span style="color: red;">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="detailsPayee" name="detailsPayee" placeholder="请输入收款人"/>
+                            </div>
+                            <label class="col-sm-2 control-label" for="detailsAmount">金额&nbsp;&nbsp;<span style="color: red;">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" id="detailsAmount" name="detailsAmount" placeholder="请输入金额"/>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-left: -30px;margin-right: 30px;">
+                            <label class="col-sm-2 control-label" for="detailsPaymentTime">收款日期&nbsp;&nbsp;<span style="color: red;">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="detailsPaymentTime" name="detailsPaymentTime" placeholder="请选择日期"/>
+                            </div>
+                            <label class="col-sm-2 control-label" for="detailsRemark">备注</label>
+                            <div class="col-sm-4">
+                                <textarea class="form-control" id="detailsRemark" name="detailsRemark"></textarea>
+                            </div>
+                        </div>
+                        <div><input type="hidden" id="detailsId"/></div>
+                        <div><input type="hidden" id="detailsCreateTime" /></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="detailsSave">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- 模态框（收入详情修改记录） -->
+    <div class="modal fade" id="detailsRecordModal"  role="dialog" aria-labelledby="detailsRecordModalLable" aria-hidden="true">
+        <div class="modal-dialog"  style="width: 95%;">
+            <div class="modal-content">
+                <div class="modal-header" style="height: 50px;background-color: #1872ab">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="detailsRecordModalLable"></h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" class="form-inline">
+                        <table class="table table table-striped table-bordered table-hover" id="detailsRecordTable">
                         </table>
                     </form>
                 </div>

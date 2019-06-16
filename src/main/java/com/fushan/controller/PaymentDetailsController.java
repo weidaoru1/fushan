@@ -10,8 +10,8 @@ import com.fushan.service.cost.PaydetailsRecordService;
 import com.fushan.service.cost.PaymentDetailsService;
 import com.fushan.service.cost.PaymentInfoService;
 import com.fushan.service.role.RoleInfoService;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,12 +35,6 @@ public class PaymentDetailsController {
     PaymentInfoService paymentInfoService;
     @Resource
     PaydetailsRecordService paydetailsRecordService;
-    @RequestMapping("payment/detailsAdd")
-    public String detailsAdd(Model model, HttpServletRequest request)throws Exception{
-        String paymentId = request.getParameter("paymentId");
-        model.addAttribute("paymentId",paymentId);
-        return "views/cost/detailsAdd";
-    }
     @RequestMapping("details/save")
     public @ResponseBody String save(HttpServletRequest request, PaymentDetails paymentDetails)throws Exception{
         JSONObject jsonObject = new JSONObject();
@@ -61,16 +55,6 @@ public class PaymentDetailsController {
         jsonObject.put("status",1);
         jsonObject.put("msg","保存成功！");
         return jsonObject.toString();
-    }
-    @RequestMapping("details/edit")
-    public String edit(Model model, HttpServletRequest request)throws Exception{
-        String id = request.getParameter("id");
-        PaymentDetails paymentDetails = new PaymentDetails();
-        if (StringUtils.isNotBlank(id)){
-            paymentDetails = paymentDetailsService.selectByPrimaryKey(Integer.parseInt(id));
-        }
-        model.addAttribute("paymentDetails",paymentDetails);
-        return "views/cost/detailsEdit";
     }
     @RequestMapping("details/editSave")
     public @ResponseBody String editSave(HttpServletRequest request, PaymentDetails paymentDetails)throws Exception{
@@ -146,17 +130,14 @@ public class PaymentDetailsController {
         }
         return "views/cost/paymentDetailsList";
     }
-    @GetMapping("payment/detailsRecordList")
-    public String detailsRecordList(Model model, HttpServletRequest request, DataGrid dataGrid)throws Exception{
+    @RequestMapping("payment/detailsRecordList")
+    public @ResponseBody String detailsRecordList(HttpServletRequest request, DataGrid dataGrid)throws Exception{
         String paydetailsId = request.getParameter("paydetailsId");
-        PaymentDetails paymentDetails = new PaymentDetails();
         Map<String,Object> map = new HashMap<>();
-        map.put("paydetailsId",paydetailsId);
         if (StringUtils.isNotBlank(paydetailsId)){
-            paymentDetails = paymentDetailsService.selectByPrimaryKey(Integer.parseInt(paydetailsId));
+            map.put("paydetailsId",paydetailsId);
         }
-        model.addAttribute("page",paydetailsRecordService.pagedQueryByCondition(dataGrid,map));
-        model.addAttribute("paymentId",paymentDetails.getPaymentId());
-        return "views/cost/paydetailsRecordList";
+        JSONObject object = DataDealUtils.dataToJson(paydetailsRecordService.pagedQueryByCondition(dataGrid,map));
+        return object.toString();
     }
 }

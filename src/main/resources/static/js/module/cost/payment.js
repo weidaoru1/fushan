@@ -8,17 +8,18 @@ $(function () {
     });
     //添加
     $("#addWindow").click(function () {
-        $('#customerName').val("");
-        $('#contact').val("");
-        $('#payee').val("");
-        $('#amounts').val("");
-        $('#amount').val("");
-        $('#type').val("");
-        $('#paymentTime').val("");
-        $('#detailsDes').val("");
-        $('#remark').val("");
+        // $('#customerName').val("");
+        // $('#contact').val("");
+        // $('#payee').val("");
+        // $('#amounts').val("");
+        // $('#amount').val("");
+        // $('#type').val("");
+        // $('#paymentTime').val("");
+        // $('#detailsDes').val("");
+        // $('#remark').val("");
         $('#id').val("");
         $('#createTime').val("");
+        $("#paymentForm")[0].reset();
         $("#paymentModalLabel").text("添加信息");
         $('#paymentModal').modal('show');
     });
@@ -170,7 +171,138 @@ $(function () {
         window.location.href="/cost/paymentList";
     });
     //详情添加
+    $("#detailsAddWindow").click(function () {
+        $("#detailsAddForm")[0].reset();
+        $('#detailsId').val("");
+        $('#detailsCreateTime').val("");
+        $("#detailsAddModalLabel").text("收入详情添加");
+        $('#detailsAddModal').modal('show');
+    });
+    //详情删除
+    $("#detailsDeleteWindow").click(function () {
+        var paymentId = $("#detailsPaymentId").val();
+        if ($("#isSuper").val() != "1"){
+            bootbox.alert("您没有删除权限，请联系系统管理员！");
+            return;
+        }
+        var check_val = [];
+        var datas = $("#detailsTable").bootstrapTable('getSelections');
+        for (var i = 0; i < datas.length; i++){
+            check_val.push(datas[i].id);
+        }
+        if (check_val.length == 0){
+            bootbox.alert("请选择删除的数据记录！")
+            return false;
+        }
+        bootbox.confirm("确定要删除选择的数据！", function(result){
+            if(!result){
+                return;
+            }
+            $.ajax({
+                url:"/details/detailsDelete",
+                type:"POST",
+                data:{
+                    ids : check_val.join(";"),
+                    paymentId : paymentId
+                },
+                dataType:"json",
+                success:function(result){
+                    bootbox.alert(result.msg, function () {
+                        $('#detailsTable').bootstrapTable('refresh', {
+                            pageNum: 1,
+                            paymentId : paymentId
+                        });
+                    });
+                }
+            });
+        });
+    });
+    //详情编辑
+    $("#detailsEditWindow").click(function () {
+        var datas = $("#detailsTable").bootstrapTable('getSelections');
+        if (datas.length > 1 || datas.length == 0){
+            bootbox.alert("请选择至少或允许一条记录！");
+            return false;
+        }
+        var data = datas[0];
+        $('#detailsPaymentTime').val(data.paymentTime.substring(0,10));
+        $('#detailsCustomerName').val(data.customerName);
+        $('#detailsContact').val(data.contact);
+        $('#detailsPayee').val(data.payee);
+        $('#detailsAmount').val(data.amount);
+        $('#detailsRemark').val(data.remark);
+        $('#detailsId').val(data.id);
+        $('#detailsCreateTime').val(data.createTime);
+        $("#detailsAddModalLabel").text("收入详情编辑");
+        $('#detailsAddModal').modal('show');
+    });
 
+    $("#detailsSave").click(function () {
+        var paymentId = $("#detailsPaymentId").val();
+        var detailsId = $("#detailsId").val();
+        var url = "/details/save";
+        if (detailsId != ""){
+            url = "/details/editSave";
+        }
+        if(form2.detailsCustomerName.value==""){
+            form2.detailsCustomerName.focus();
+            return false;
+        }
+        var contact = form2.detailsContact.value;
+        var patrn = /^0?1[358]\d{9}$/;
+        if(contact != ""){
+            var pa = patrn.test(contact);
+            if (!pa){
+                bootbox.alert("请输入正确的手机号码格式！");
+                form2.detailsContact.focus();
+                return false;
+            }
+        }
+        if(form2.detailsPayee.value==""){
+            form2.detailsPayee.focus();
+            return false;
+        }
+        if(form2.detailsAmount.value==""){
+            form2.detailsAmount.focus();
+            return false;
+        }
+        if(form2.detailsPaymentTime.value==""){
+            form2.detailsPaymentTime.focus();
+            return false;
+        }
+        var paymentTime = new Date(form2.detailsPaymentTime.value);
+        var createTime = form2.detailsCreateTime.value;
+        if (createTime == ""){
+            createTime = new Date();
+        }else{
+            createTime = new Date(createTime);
+        }
+        $.ajax({
+            url:url,
+            type:"POST",
+            data:{
+                customerName : form2.detailsCustomerName.value,
+                paymentId : paymentId,
+                contact : form2.detailsContact.value,
+                payee : form2.detailsPayee.value,
+                amount : form2.detailsAmount.value,
+                paymentTime : paymentTime,
+                remark : form2.detailsRemark.value,
+                createTime : createTime,
+                id : detailsId
+            },
+            dataType:"json",
+            success:function(result){
+                bootbox.alert(result.msg, function () {
+                    $('#detailsAddModal').modal('hide');
+                    $('#detailsTable').bootstrapTable('refresh', {
+                        pageNum: 1,
+                        paymentId : paymentId
+                    });
+                });
+            }
+        });
+    });
 });
 function EditViewById(id) {
     //销毁表格数据
@@ -270,6 +402,7 @@ function EditViewById(id) {
     $('#recordModal').modal('show');
 }
 function queryDetails(id) {
+    $("#detailsPaymentId").val(id);
     $('#recordTable').bootstrapTable('destroy');
     $('#detailsTable').bootstrapTable('destroy');
     $("#detailsTable").bootstrapTable({
@@ -311,6 +444,99 @@ function queryDetails(id) {
             title: 'ID',
             visible: false
         },{
+            field: 'paymentId',
+            title: '收入记录ID',
+            visible: false
+        },{
+            field: 'customerName',
+            title: '客户姓名'
+        },{
+            field: 'contact',
+            title: '联系方式'
+        },{
+            field: 'payee',
+            title: '收款人'
+        },{
+            field: 'amount',
+            title: '金额'
+        },{
+            field: 'paymentTime',
+            title: '收款日期',
+            formatter:function(value,row,index){
+                if (value == null){
+                    return ""
+                }
+                return value.substring(0, 10);
+            }
+        },{
+            field: 'createTime',
+            title: '创建日期'
+        },{
+            field: 'remark',
+            title: '备注',
+            visible: false
+        },{
+            field: 'id',
+            title: '操作',
+            width: 120,
+            align: 'center',
+            valign: 'middle',
+            formatter: function (value,row,index) {
+                var id = value;
+                var result = "";
+                result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"detailsRecordById('" + id + "')\" title='修改记录'><span class='glyphicon glyphicon-pencil'></span></a>";
+                return result;
+            },
+        }]
+    });
+    $("#paymentDetailsModal").text("收入详情");
+    $('#detailsModal').modal('show');
+}
+
+function detailsRecordById(id) {
+    //销毁表格数据
+    $('#detailsRecordTable').bootstrapTable('destroy');
+    $("#detailsRecordTable").bootstrapTable({
+        contentType: "application/x-www-form-urlencoded", //不设置时会默认text/plain，request.getParameter()是取不到值的
+        url: "/payment/detailsRecordList",         //请求后台的URL（*）
+        method: 'POST',                      //请求方式（*）
+        height: '100%',
+        striped: true,                      //是否显示行间隔色
+        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true,                   //是否显示分页（*）
+        sortable: false,                     //是否启用排序
+        sortOrder: "asc",                   //排序方式
+        sidePagination: "server",                    //分页方式：client客户端分页，server服务端分页（*）
+        pageNum:1,
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 20],                //可供选择的每页的行数（*）
+        striped: true,                    //是否显示行间隔色
+        showRefresh: true,
+        showColumns: true,                //是否显示所有的列
+        uniqueId: "ID",                   //每一行的唯一标识，一般为主键列
+        paginationPreText: "上一页",
+        paginationNextText: "下一页",
+        queryParams: function (params) {
+            var pageSize = params.limit;
+            var offset = params.offset;
+            var pageNum = offset / pageSize + 1;
+            return {
+                pageSize : pageSize,
+                pageNum : pageNum,
+                paydetailsId : id
+            }
+        },
+        responseHandler: responseHandler,
+        columns: [{
+            checkbox: true
+        },{
+            field: 'id',
+            title: 'ID',
+            visible: false
+        },{
+            field: 'userName',
+            title: '修改人'
+        },{
             field: 'customerName',
             title: '客户姓名'
         },{
@@ -340,6 +566,6 @@ function queryDetails(id) {
             visible: false
         }]
     });
-    $("#paymentDetailsModal").text("收入详情");
-    $('#detailsModal').modal('show');
+    $("#detailsRecordModalLable").text("修改记录");
+    $('#detailsRecordModal').modal('show');
 }

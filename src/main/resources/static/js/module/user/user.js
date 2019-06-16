@@ -47,14 +47,12 @@ $(function () {
         $('#myModal').modal('show');
     });
     $("#userEdit").click(function () {
-        var obj = document.getElementsByName("check");
+        var obj = $("#userTable").bootstrapTable('getSelections');
         var check_val = [];
         var id;
         for (var i = 0; i < obj.length; i++){
-            if(obj[i].checked){
-                check_val.push(obj[i].value);
-                id = obj[i].value;
-            }
+            check_val.push(obj[i].id);
+            id = obj[i].id;
         }
         if (check_val.length == 0){
             bootbox.alert("请选择编辑的数据记录！")
