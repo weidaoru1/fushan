@@ -87,7 +87,15 @@
             },{
                 field: 'state',
                 title: '系统默认',
-                visible: false
+                formatter:function(value,row,index){
+                    if (value == 1){
+                        return "<span>是</span>"
+                    }else if (value == 2){
+                        return "<span>否</span>"
+                    }else{
+                        return "<span>其他</span>"
+                    }
+                }
             }]
         })
         //查询条件

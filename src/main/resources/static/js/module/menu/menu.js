@@ -28,6 +28,7 @@ $(function () {
                 name : form3.name.value,
                 num : form3.num.value,
                 des : form3.des.value,
+                state : 2,
                 id : form3.id.value
             },
             dataType:"json",
@@ -126,6 +127,7 @@ $(function () {
                 num : form4.childNum.value,
                 des : form4.childDes.value,
                 parentId :  parentId,
+                state : 2,
                 url : form4.url.value,
                 id : form4.childId.value
             },
@@ -259,7 +261,15 @@ function queryDetails(id) {
         },{
             field: 'state',
             title: '系统默认',
-            visible: false
+            formatter:function(value,row,index){
+                if (value == 1){
+                    return "<span>是</span>"
+                }else if (value == 2){
+                    return "<span>否</span>"
+                }else{
+                    return "<span>其他</span>"
+                }
+            }
         }]
     });
     $("#childMenuModal").text("子级菜单");
