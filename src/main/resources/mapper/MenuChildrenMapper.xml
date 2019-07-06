@@ -19,12 +19,23 @@
 
     <select id="count" resultType="java.lang.Integer" parameterType="java.util.Map">
       select count(id) from  tb_menu_children
+        <where>
+            <if test="parentId != null">
+                parent_Id = #{parentId,jdbcType=INTEGER}
+            </if>
+        </where>
     </select>
 
     <select id="pagedQuery" resultMap="BaseResultMap" parameterType="java.util.Map">
         select
         <include refid="Base_Column_List"/>
         from tb_menu_children
+        <where>
+            <if test="parentId != null">
+                parent_Id = #{parentId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by num
         limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
     </select>
 
@@ -73,6 +84,10 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from tb_menu_children
         where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByParentId" parameterType="java.lang.Integer">
+        delete from tb_menu_children
+        where parent_Id = #{parentId,jdbcType=INTEGER}
   </delete>
 
     <insert id="insertSelective" parameterType="com.fushan.entity.MenuChildren">

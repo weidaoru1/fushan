@@ -24,6 +24,7 @@
         select
         <include refid="Base_Column_List"/>
         from tb_menu_info
+        order  by num
         limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
     </select>
 

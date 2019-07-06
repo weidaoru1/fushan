@@ -11,4 +11,5 @@ public interface MenuInfoService extends BaseService<MenuInfo> {
     List<MenuInfo> queryListAll();
     int insertSelective(MenuInfo entity);
     int updateByPrimaryKey(MenuInfo entity);
+    int deleteByPrimaryKey(Integer id);
 }

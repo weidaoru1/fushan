@@ -53,4 +53,14 @@ public class MenuChildrenServiceImpl implements MenuChildrenService {
     public int updateByPrimaryKey(MenuChildren entity) {
         return menuChildrenMapper.updateByPrimaryKeySelective(entity);
     }
+
+    @Override
+    public int deleteByPrimaryKey(Integer id) {
+        return menuChildrenMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int deleteByParentId(Integer id) {
+        return menuChildrenMapper.deleteByParentId(id);
+    }
 }

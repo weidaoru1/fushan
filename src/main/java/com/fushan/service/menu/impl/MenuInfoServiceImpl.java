@@ -62,4 +62,9 @@ public class MenuInfoServiceImpl implements MenuInfoService {
         return menuInfoMapper.updateByPrimaryKeySelective(entity);
     }
 
+    @Override
+    public int deleteByPrimaryKey(Integer id) {
+        return menuInfoMapper.deleteByPrimaryKey(id);
+    }
+
 }

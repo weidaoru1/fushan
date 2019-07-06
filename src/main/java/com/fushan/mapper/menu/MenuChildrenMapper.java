@@ -17,4 +17,5 @@ public interface MenuChildrenMapper{
     MenuChildren selectByPrimaryKey(Integer id);
     int updateByPrimaryKeySelective(MenuChildren menuChildren);
     List<MenuChildren> queryMenuByParentId(Integer parentId);
+    int deleteByParentId(Integer id);
 }

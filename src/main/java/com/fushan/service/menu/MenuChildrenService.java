@@ -10,4 +10,6 @@ public interface MenuChildrenService extends BaseService<MenuChildren> {
     List<MenuChildren> queryListAll();
     int insertSelective(MenuChildren entity);
     int updateByPrimaryKey(MenuChildren entity);
+    int deleteByPrimaryKey(Integer id);
+    int deleteByParentId(Integer id);
 }
