@@ -2,16 +2,15 @@ package com.fushan.controller;
 import com.fushan.common.util.DataDealUtils;
 import com.fushan.common.util.DataGrid;
 import com.fushan.common.util.UserConstants;
-import com.fushan.entity.PaymentInfo;
 import com.fushan.entity.RoleInfo;
 import com.fushan.entity.SpendInfo;
 import com.fushan.entity.SpendRecord;
 import com.fushan.service.cost.SpendInfoService;
 import com.fushan.service.cost.SpendRecordService;
 import com.fushan.service.role.RoleInfoService;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,17 +32,22 @@ public class SpendController {
     @Autowired
     SpendRecordService spendRecordService;
     @RequestMapping("cost/spendList")
-    public String spendList(Model model, HttpServletRequest request, DataGrid dataGrid) throws Exception {
+    public String spendList(Model model, HttpServletRequest request) throws Exception {
         List<RoleInfo> roleInfoList = roleInfoService.queryByUserId((Integer) request.getSession().getAttribute(UserConstants.LOGIN_USER_ID.name()));
         if (roleInfoList != null && roleInfoList.size() > 0) {
             model.addAttribute("role", roleInfoList.get(0));
         }
-        model.addAttribute("page", spendInfoService.pagedQuery(dataGrid));
         return "views/cost/spendList";
     }
-    @RequestMapping("cost/spendAdd")
-    public String spendAdd(Model model, HttpServletRequest request, DataGrid dataGrid) throws Exception {
-        return "views/cost/spendAdd";
+    @RequestMapping("cost/spendDataList")
+    public @ResponseBody String spendDataList(HttpServletRequest request, DataGrid dataGrid)throws Exception{
+        String type = request.getParameter("type");
+        Map<String,Object> map = new HashMap<>();
+        if (StringUtils.isNotBlank(type)){
+            map.put("type",type);
+        }
+        JSONObject object = DataDealUtils.dataToJson(spendInfoService.pagedQueryByCondition(dataGrid,map));
+        return object.toString();
     }
     @RequestMapping("spend/save")
     public @ResponseBody String save(HttpServletRequest request, SpendInfo spendInfo)throws Exception{
@@ -53,26 +57,15 @@ public class SpendController {
         jsonObject.put("msg","保存成功！");
         return jsonObject.toString();
     }
-    @RequestMapping("spend/queryById")
-    public String queryById(Model model, HttpServletRequest request)throws Exception{
-        String id = request.getParameter("id");
-        SpendInfo spendInfo = null;
-        if (StringUtils.isNotBlank(id)){
-            spendInfo = spendInfoService.selectByPrimaryKey(Integer.parseInt(id));
-        }
-        if (spendInfo != null){
-            model.addAttribute("spendInfo",spendInfo);
-        }
-        return "views/cost/spendEdit";
-    }
     @GetMapping("spend/spendRecordList")
-    public String querySpendRecord(Model model, HttpServletRequest request,DataGrid dataGrid)throws Exception{
+    public @ResponseBody String querySpendRecord(HttpServletRequest request,DataGrid dataGrid)throws Exception{
         String spendId = request.getParameter("spendId");
         Map<String,Object> map = new HashMap<>();
-        map.put("spendId",spendId);
-        model.addAttribute("spendId",spendId);
-        model.addAttribute("page",spendRecordService.pagedQueryByCondition(dataGrid,map));
-        return "views/cost/spendRecordList";
+        if(StringUtils.isNotBlank(spendId)){
+            map.put("spendId",spendId);
+        }
+        JSONObject object = DataDealUtils.dataToJson(spendRecordService.pagedQueryByCondition(dataGrid,map));
+        return object.toString();
     }
 
     @RequestMapping("spend/edit")

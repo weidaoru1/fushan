@@ -16,11 +16,21 @@
   </sql>
   <select id="count" resultType="java.lang.Integer" parameterType="java.util.Map">
       select count(id) from  tb_spend_info
+    <where>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER}
+      </if>
+    </where>
     </select>
   <select id="pagedQuery" resultMap="BaseResultMap" parameterType="java.util.Map">
     select
     <include refid="Base_Column_List"/>
     from tb_spend_info
+    <where>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER}
+      </if>
+    </where>
     order by create_time desc
     limit #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
   </select>

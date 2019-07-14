@@ -2,12 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="common/common :: common"></div>
-    <!--<div th:replace="editPayment/editPayment :: editPayment"></div>-->
     <style>
         body{background-color: #e7eaec;height: 830px;}
         .divStyle{margin-left: 20px;margin-right: 20px;margin-top: 30px;background-color: white;}
     </style>
-    <script  th:src="@{/js/init/paging.js}"></script>
     <script  th:src="@{/js/module/cost/spend.js}"></script>
 </head>
 <body>
@@ -17,99 +15,216 @@
                 <div style="height: 20px;">
                     <input type="hidden" th:value="${role.isSuper}" id="isSuper" />
                 </div>
-                <div class="doc-buttons" style=" margin-left: 20px;">
-                    <button id="addWindow" class="btn btn-primary" type="button">
-                        <i class="glyphicon glyphicon-plus"></i>&nbsp;新增
-                    </button>
-                    <button id="editWindow" class="btn btn-primary" type="button">
-                        <i class="glyphicon glyphicon-edit"></i>&nbsp;编辑
-                    </button>
-                    <button id = "deleteWindow" class="btn btn-primary" type="button">
-                        <i class="glyphicon glyphicon-trash"></i>&nbsp;删除
+                <div class="doc-buttons">
+                    <label style="margin-left: 20px;">支出方式&nbsp;:&nbsp;</label>
+                    <select style="height: 33px;width: 120px;" id="queryType" name="type">
+                        <option value ="">请选择</option>
+                        <option value ="1">现金</option>
+                        <option value ="2">支付宝</option>
+                        <option value ="3">微信</option>
+                        <option value ="4">转账</option>
+                    </select>
+                    <button id = "conditionSearch" class="btn btn-primary" type="button" style="margin-left: 20px;">
+                        <i class="glyphicon glyphicon-search"></i>&nbsp; 查询
                     </button>
                 </div>
                 <div class="table-responsive" style="margin-left: 20px;margin-right: 20px;">
+                    <div class="doc-buttons" id="toolbar">
+                        <button id="addWindow" class="btn btn-primary" type="button">
+                            <i class="glyphicon glyphicon-plus"></i>&nbsp;新增
+                        </button>
+                        <button id="editWindow" class="btn btn-primary" type="button">
+                            <i class="glyphicon glyphicon-edit"></i>&nbsp;编辑
+                        </button>
+                        <button id = "deleteWindow" class="btn btn-primary" type="button">
+                            <i class="glyphicon glyphicon-trash"></i>&nbsp;删除
+                        </button>
+                    </div>
                     <form role="form" class="form-inline" action="">
-                        <table class="table table table-striped table-bordered table-hover" id="table" data-toggle="table"
-                               data-show-columns="true" data-show-refresh="true">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox"
-                                               onclick="$('.ii-checks').prop('checked',($(this).prop('checked') ? true : false ))"
-                                               name="input[]"></th>
-                                    <th data-field="index">序号</th>
-                                    <th data-field="spendName">支出人</th>
-                                    <th data-field="spendMatters">支出事项</th>
-                                    <th data-field="amount">支出金额</th>
-                                    <th data-field="type">支出方式</th>
-                                    <th data-field="spendTime">支出日期</th>
-                                    <th data-field="createTime">创建日期</th>
-                                    <th data-field="remark" data-visible="false">备注</th>
-                                    <th data-field="control">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="spendInfo : ${page.list}">
-                                    <td><input type="checkbox" class="ii-checks" name="check" th:value="${spendInfo.id}"></td>
-                                    <td th:text="${spendInfoStat.count}"></td>
-                                    <td th:text="${spendInfo.spendName}"></td>
-                                    <td th:text="${spendInfo.spendMatters}"></td>
-                                    <td th:text="${spendInfo.amount}"></td>
-                                    <td th:switch="${spendInfo.type}">
-                                        <span th:case="1">现金</span>
-                                        <span th:case="2">支付宝</span>
-                                        <span th:case="3">微信</span>
-                                        <span th:case="4">转账</span>
-                                    </td>
-                                    <td th:text="${#dates.format(spendInfo.spendTime, 'yyyy-MM-dd')}"></td>
-                                    <td th:text="${#dates.format(spendInfo.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                                    <td th:text="${spendInfo.remark}"></td>
-                                    <td><a th:href="@{'/spend/spendRecordList?spendId='+ ${spendInfo.id}}">修改记录</a></td>
-                                </tr>
-                            </tbody>
+                        <table class="table table table-striped table-bordered table-hover" id="spendTable">
                         </table>
-                        <div class="fixed-table-pagination" th:style="${page.list.size() == 0 ? 'display: none;': ''}">
-                            <div class="pull-left pagination-detail">
-                                <span class="pagination-info">显示第 <span th:text="${(page.pageNum - 1)* page.pageSize + 1}"></span> 到第
-                                    <span th:text="${page.pageNum == page.lastPage ? page.total : page.pageNum * page.pageSize }"></span> 条记录，总共<span th:text="${page.total}"></span>条记录</span> <span
-                                    class="page-list">每页显示<span class="btn-group dropup">
-                                <button type="button" class="btn btn-default  dropdown-toggle"
-                                        data-toggle="dropdown">
-                                    <span class="page-size" th:text="${page.pageSize}"></span> <span
-                                        class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" id="resources_meny">
-                                    <li><a href="javascript:void(0)">10</a></li>
-                                    <li><a href="javascript:void(0)">20</a></li>
-                                </ul>
-                            </span> 条记录
-                            </span>
-                            </div>
-
-                            <div style="margin-top: -19px;"  class="pull-right pagination " data-th-classappend="${page.pageSize >= page.total ? 'hidden': ''}">
-                                <ul class="pagination">
-                                    <li class="page-first" data-th-classappend="${page.pageNum == page.firstPage ? 'disabled': ''}"
-                                        th:onclick="'javascript:loadResources(\''+'1'+'\''+','+${page.pageSize}+')'"><a href="javascript:void(0)">«</a></li>
-                                    <li class="page-pre" data-th-classappend="${page.pageNum == page.firstPage ? 'disabled': ''}"
-                                        th:onclick="'javascript:loadResources(\''+${page.pageNum == page.firstPage ? page.firstPage: page.pageNum - 1}+'\''+','+${page.pageSize}+')'"><a
-                                            href="javascript:void(0)">‹</a>
-                                    </li>
-                                    <li th:each="p : ${page.pages}" class="page-number"data-th-classappend="${page.pageNum == pStat.count ? 'active': ''}"
-                                        th:onclick="'javascript:loadResources(\''+${pStat.count}+'\''+','+${page.pageSize}+')'">
-                                        <a href="javascript:void(0)" th:text="${pStat.count}"></a>
-                                    </li>
-                                    <li class="page-next" data-th-classappend="${page.pageNum == page.lastPage ? 'disabled': ''}"
-                                        th:onclick="'javascript:loadResources(\''+${page.pageNum == page.lastPage ? page.lastPage:page.pageNum + 1}+'\''+','+${page.pageSize}+')'"><a
-                                            href="javascript:void(0)">›</a></li>
-                                    <li class="page-last " data-th-classappend="${page.pageNum == page.lastPage ? 'disabled': ''}"
-                                        th:onclick="'javascript:loadResources(\''+${page.lastPage}+'\''+','+${page.pageSize}+')'"><a href="javascript:void(0)">»</a></li>
-                                </ul>
-                            </div>
-                        </div>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- 模态框（添加） -->
+    <div class="modal fade" id="spendModal"  role="dialog" aria-labelledby="spendModalLabel" aria-hidden="true">
+        <div class="modal-dialog"  style="width: 860px;">
+            <div class="modal-content">
+                <div class="modal-header" style="height: 50px;background-color: #1872ab">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="spendModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" name="spendForm" role="form" id="spendForm">
+                        <div class="form-group" style="margin-left: -30px;margin-right: 30px;">
+                            <label class="col-sm-2 control-label" for="spendName">支出人&nbsp;<span style="color: red;">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="spendName"  name="spendName" placeholder="请输入支出人"/>
+                            </div>
+                            <label class="col-sm-2 control-label" for="spendMatters">支出事项</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="spendMatters"  name="spendMatters" placeholder="请输入支出事项"/>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-left: -30px;margin-right: 30px;">
+                            <label class="col-sm-2 control-label" for="amount">支出金额&nbsp;<span style="color: red;">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" id="amount"  name="amount" placeholder="请输入金额"/>
+                            </div>
+                            <label class="col-sm-2 control-label" for="type">支出方式</label>
+                            <div class="col-sm-4">
+                                <select style="height: 35px;width: 245px;" id="type" name="type">
+                                    <option value ="1">现金</option>
+                                    <option value ="2">支付宝</option>
+                                    <option value ="3">微信</option>
+                                    <option value ="4">转账</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-left: -30px;margin-right: 30px;">
+                            <label class="col-sm-2 control-label" for="spendTime">支出日期</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="spendTime"  name="spendTime" placeholder="请选择支出日期"/>
+                            </div>
+                            <label class="col-sm-2 control-label" for="remark">备注</label>
+                            <div class="col-sm-4">
+                                <textarea class="form-control" id="remark" name="remark"></textarea>
+                            </div>
+                        </div>
+                        <div><input type="hidden" id="id"/></div>
+                        <div><input type="hidden" id="createTime" /></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="spendSave">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+<script type="text/javascript">
+    $("#spendTable").bootstrapTable({
+        contentType: "application/x-www-form-urlencoded", //不设置时会默认text/plain，request.getParameter()是取不到值的
+        url: "/cost/spendDataList",         //请求后台的URL（*）
+        method: 'POST',                      //请求方式（*）
+        height: '100%',
+        toolbar: '#toolbar',                //工具按钮用哪个容器
+        striped: true,                      //是否显示行间隔色
+        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true,                   //是否显示分页（*）
+        sortable: false,                     //是否启用排序
+        sortOrder: "asc",                   //排序方式
+        sidePagination: "server",                    //分页方式：client客户端分页，server服务端分页（*）
+        pageNum:1,
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 20],                //可供选择的每页的行数（*）
+        striped: true,                    //是否显示行间隔色
+        showRefresh: true,               //是否显示刷新按钮
+        showToggle:true,                 //是否显示详细视图和列表视图
+        showColumns: true,                //是否显示所有的列
+        uniqueId: "ID",                   //每一行的唯一标识，一般为主键列
+        paginationPreText: "上一页",
+        paginationNextText: "下一页",
+        paginationFirstText: "首页",
+        paginationLastText: "末页",
+        queryParams: queryParams,
+        responseHandler: responseHandler,
+        columns: [{
+            checkbox: true
+        },{
+            field: 'id',
+            title: 'ID',
+            visible: false
+        },{
+            field: 'spendName',
+            title: '支出人'
+        },{
+            field: 'spendMatters',
+            title: '支出事项'
+        },{
+            field: 'amount',
+            title: '支出金额'
+        },{
+            field: 'type',
+            title: '支出方式',
+            formatter:function(value,row,index){
+                if (value == 1){
+                    return "<span>现金</span>"
+                }else if (value == 2){
+                    return "<span>支付宝</span>"
+                }else if (value == 3){
+                    return "<span>微信</span>"
+                }else if (value == 4){
+                    return "<span>转账</span>"
+                }else{
+                    return "<span>其他</span>"
+                }
+            }
+        },{
+            field: 'spendTime',
+            title: '支出日期',
+            formatter:function(value,row,index){
+                if (value == null){
+                    return ""
+                }
+                return value.substring(0, 10);
+            }
+        },{
+            field: 'createTime',
+            title: '创建日期'
+        },{
+            field: 'remark',
+            title: '备注',
+            visible: false
+        },{
+            field: 'id',
+            title: '操作',
+            width: 120,
+            align: 'center',
+            valign: 'middle',
+            formatter: actionFormatter,
+        }]
+    });
+    //操作栏的格式化
+    function actionFormatter(value, row, index) {
+        var id = value;
+        var result = "";
+        result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"EditViewById('" + id + "')\" title='修改记录'><span class='glyphicon glyphicon-pencil'></span></a>";
+        return result;
+    }
+    //查询条件
+    function queryParams(params) {
+        var pageSize = params.limit;
+        var offset = params.offset;
+        var pageNum = offset / pageSize + 1;
+        return {
+            pageSize : pageSize,
+            pageNum : pageNum,
+            type : $.trim($("#queryType").val())
+        }
+    }
+</script>
+    <!-- 模态框（修改记录） -->
+    <div class="modal fade" id="recordModal"  role="dialog" aria-labelledby="spendRecordModal" aria-hidden="true">
+        <div class="modal-dialog"  style="width: 95%;">
+            <div class="modal-content">
+                <div class="modal-header" style="height: 50px;background-color: #1872ab">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="spendRecordModal"></h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" class="form-inline" action="">
+                        <table class="table table table-striped table-bordered table-hover" id="recordTable">
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
 </body>
 </html>
