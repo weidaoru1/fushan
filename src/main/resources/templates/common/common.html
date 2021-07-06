@@ -20,6 +20,22 @@
     <script  th:src="@{/js/bootbox.js}"></script>
     <script  th:src="@{/js/init/init.js}"></script>
     <script  th:src="@{/js/init/utilInit.js}"></script>
+    <script>
+        //在请求成功或失败之后均调用， 跳转至登录页面
+        $.ajaxSetup({
+            complete:function(xhr,textStatus){
+                console.log("status:" + xhr.status);
+                if (xhr.status == '10001'){
+                    console.log("status:" + xhr.status + ",跳转至登录页面。。。");
+                    if (window != top) {
+                        //判断一下当前是不是最顶层，如果不是，则做一下顶层页面重定向
+                        top.location.href = "http://" + document.location.host + "/login";
+                    }
+                }
+
+            }
+        });
+    </script>
 </div>
 </body>
 </html>
