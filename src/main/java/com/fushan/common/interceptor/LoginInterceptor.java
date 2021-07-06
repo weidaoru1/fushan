@@ -24,8 +24,15 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
         HttpSession session = request.getSession();
-        if (session.getAttribute(UserConstants.LOGIN_USER.name()) == null){
+       if (path.equals("/")) {
             response.sendRedirect(request.getContextPath()+"login");
+            return false;
+        }
+        if (session.getAttribute(UserConstants.LOGIN_USER.name()) == null){
+            // 前端判断跳转至登录页面
+            response.setStatus(10001);
+            response.setContentType("text/html");
+            response.setCharacterEncoding("UTF-8");
             return false;
         }
         return true;
